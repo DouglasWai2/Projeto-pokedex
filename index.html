@@ -16,26 +16,26 @@
     <header>
         <nav id="navbar">
             <ol>
-                <li class="display-flex-column grey radius-left">
-                    <span class="header-icon image ">
+                <li class="menu-item display-flex-column grey radius-left">
+                    <span class="header-icon image transition">
                         <img src="./assets/icons8-pikachu-48.png" alt="pikachu-icon">
                     </span>
                     <span class="header-icon text">Página Inicial</span> <a href="#"></a>
                 </li>
-                <li class="display-flex-column red">
-                    <span class="header-icon image">
+                <li class="menu-item display-flex-column red">
+                    <span class="header-icon image transition">
                         <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon">
                     </span>
                     <span class="header-icon text"></span>Pokedex</span> <a href="#"></a>
                 </li>
                 </li>
-                <li class="display-flex-column orange">
+                <li class="menu-item display-flex-column orange">
                     <span class="header-icon image transition">
                         <img src="./assets/icons8-cellphone-30.png" alt="pikachu-icon">
                     </span> <span class="header-icon text"></span>Aplicativos Móveis</span> <a href="#"></a>
                 </li>
                 </li>
-                <li class="display-flex-column yellow radius-right">
+                <li class="menu-item display-flex-column yellow radius-right">
                     <span class="header-icon image transition">
                         <img src="./assets/icons8-bulbasaur-48.png" alt="pikachu-icon">
                     </span> <span class="header-icon text"></span>TV Pokémon</span> <a href="#"></a>
@@ -52,6 +52,7 @@
     </header>
     <div id="background">
         <main>
+           
             <div class="background nav">
                 <div>
                     <nav id="side-nav">
@@ -85,23 +86,29 @@
                 </div>
                 <div class="advanced-search">
                     <p>Mostrar busca avançada</p>
-                    <img src="" alt="advanced-search icon">
+                    <img src="./assets/down-arrow.png" alt="advanced-search icon">
                 </div>
-                <div clas="buttons-container">
-                    <button>Surpreenda-me</button>
-                    <label for="filter-list">Organizar por:</label>
-                    <select name="filter-list">
+                <div id="span-border-container">
+                    <div id="span-border-left"></div>
+                    <div id="span-border-middle"></div>
+                    <div id="span-border-right"></div>
+                </div>
+                <div class="buttons-container">
+                    <button id="randomize-button"><img id="randomize-icon" src="./assets/refresh_2546743.png">Surpreenda-me</button>                  
+                    <label class="filter-list-label" for="filter-list">Organizar por</label>
+                    <label class="filter-list-icon" for="filter-list">
+                        <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon"></label>
+                    <select class="filter-list" name="filter-list">
+                        
                         <option class="filter-list option" value="0">Menor número primeiro</option>
                         <option class="filter-list option" value="1">Maior número primeiro</option>
                         <option class="filter-list option" value="2">A-Z</option>
                         <option class="filter-list option" value="3">Z-A</option>
                     </select>
-
-                </div>
-                <div class="pokemons-background">
-
-                    <button>Carregar mais Pokémon</button>
-                </div>
+                </div>             
+            </div>
+            <div class="pokemons-background">
+                <button>Carregar mais Pokémon</button>
             </div>
         </main>
         <footer>

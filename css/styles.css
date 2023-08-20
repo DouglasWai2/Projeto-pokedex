@@ -13,16 +13,17 @@
 /* Header */
 #navbar{
     width: 100%;
-    height: 10vh; 
+    height: 9vh; 
     position: fixed;
     background-color: #fff
 }
 
 ol{
+    position: relative;
+    left: -50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 100px;
     color: #313131
 }
 
@@ -56,9 +57,20 @@ li{
     margin: 4px;  
 }
 
+.menu-item:hover .transition{
+    filter: brightness(10);
+}
+
+.menu-item:hover .transition {
+    transition: 0.3s;
+}
+
+.menu-item:hover {
+    transition: 0.2s;
+}
+
 .transition:hover{
     filter: brightness(10);
-    transition: 0.3s;
 }
 
 .grey{
@@ -82,32 +94,29 @@ li{
 
 .grey:hover{
     background-color: #919191;
-    transition: 0.3s;
 }
+
+
 .red:hover{
     background-color: #e3350d;
-    transition: 0.3s;
 }
 .orange:hover{
     background-color: #ee6b2f;
-    transition: 0.3s;
 }
 .yellow:hover{
     background-color: #e6bc2f;
-    transition: 0.3s;
 }
 
 li:hover{
     color: white;
-    transition: 0.3s;
 }
 
 /* Header styling end */
 
 main{
-    width: 900px;
+    width: 1000px;
     margin: 0 auto;
-    padding: 10vh 100px;
+    padding: 10vh 150px;
     background-image: url(../assets/container_bg.png);
     background-color: #fff;
     height: 100vh;
@@ -121,7 +130,7 @@ main{
     height: 100px;
     width: 50px;
     top: 10em;
-    margin-left: -100px;
+    margin-left: -150px;
 }
 
 
@@ -131,7 +140,8 @@ h1{
     color: #919191;
     font-size: 18pt;
     font-weight: 300;
-    padding: 0.5em 0;
+    margin: -8px 0;
+    padding: 0.8em 0;
     align-content: center;
     vertical-align: middle;
 }
@@ -140,8 +150,8 @@ h1{
 
 #search-container{
     display: flex;
-    margin: 0 -100px;
-    padding: 0 100px;
+    margin: 0 -150px;
+    padding: 0 150px;
     height: 10em;
     background-color: #313131;
     color: #fff;
@@ -200,3 +210,139 @@ h1{
     margin-top: 1.8em;
     padding: 1em;
 }
+
+/* Filter styling */
+
+.advanced-search{
+    background-color: #616161;
+    height: 3.5em;
+    margin: 0 -150px;
+    display: flex;
+    justify-content: center;
+    padding-top: 2.8em;
+    font-size: 13px;
+    font-weight: 300;
+    gap: 8px;
+    color: #fff;
+}
+
+.advanced-search p, .advanced-search img{
+    position: relative;
+}
+.advanced-search img{
+    width: 15px;
+    height: 15px;
+    padding-bottom: 3px;
+    background-color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+#span-border-container{
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    
+}
+
+#span-border-middle{
+    text-align: center;
+    background-color: #616161;
+    height: 15px;
+    width: 350px;
+
+}
+
+#span-border-right, #span-border-left{
+    width: 15px;
+    height: 15px;
+}
+
+#span-border-right{
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 15px 15px 0 0;
+    border-color: #616161 transparent transparent transparent;
+}
+
+#span-border-left{
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 15px 15px 0;
+    border-color: transparent #616161 transparent transparent;
+    border-bottom-left-radius:20px;
+}
+
+.buttons-container{
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+    justify-content: flex-end;
+}
+
+.filter-list-label{
+    padding: 6px;
+    color: #919191;
+    font-weight: 300;
+    margin-right: 15px;
+}
+
+.filter-list-icon img{
+    height: 18px;
+    background-position: center;
+    filter: brightness(10);
+}
+
+.filter-list-icon{
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    padding: 0 3px;
+    margin: 0 -3px;
+}
+
+.filter-list{
+    background-color: #313131;
+    color: #fff;
+    height: 30px;
+    font-size: 10pt;
+    padding: 5px;
+    padding-left: 30px;
+    border-bottom: 4px;
+    margin-left: -30px;
+    margin-right: 20px;
+    border-radius: 5px;
+    font-weight: 300;
+}
+
+#randomize-button{
+    display: flex;
+    background-color: #30a7d7;
+    border: none;
+    color: #fff;
+    width: 250px;
+    height: 35px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-right: 110px;
+}
+
+#randomize-icon{
+    filter: invert(10);
+    transform: rotate(180deg);
+    height: 17px;
+}
+
+.pokemons-background{
+    background-color: #fff;
+    height: 60%;
+    margin-top: -70px;
+}
+
+
