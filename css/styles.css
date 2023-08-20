@@ -140,8 +140,8 @@ h1{
 
 #search-container{
     display: flex;
-    margin: 0 -10vw;
-    padding: 0 10vw;
+    margin: 0 -100px;
+    padding: 0 100px;
     height: 10em;
     background-color: #313131;
     color: #fff;
