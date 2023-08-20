@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,500;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <title>Pokedex - Douglas</title>
+</head>
+
+<body>
+    <header>
+        <nav id="navbar">
+            <ol>
+                <li class="display-flex-column grey radius-left">
+                    <span class="header-icon image ">
+                        <img src="./assets/icons8-pikachu-48.png" alt="pikachu-icon">
+                    </span>
+                    <span class="header-icon text">Página Inicial</span> <a href="#"></a>
+                </li>
+                <li class="display-flex-column red">
+                    <span class="header-icon image">
+                        <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon">
+                    </span>
+                    <span class="header-icon text"></span>Pokedex</span> <a href="#"></a>
+                </li>
+                </li>
+                <li class="display-flex-column orange">
+                    <span class="header-icon image transition">
+                        <img src="./assets/icons8-cellphone-30.png" alt="pikachu-icon">
+                    </span> <span class="header-icon text"></span>Aplicativos Móveis</span> <a href="#"></a>
+                </li>
+                </li>
+                <li class="display-flex-column yellow radius-right">
+                    <span class="header-icon image transition">
+                        <img src="./assets/icons8-bulbasaur-48.png" alt="pikachu-icon">
+                    </span> <span class="header-icon text"></span>TV Pokémon</span> <a href="#"></a>
+                </li>
+                </li>
+                <li class="display-flex-column" id="pokemon_live">
+                    <span class="header-icon image">
+
+                    </span> <a href="#"></a>
+                </li>
+                </li>
+            </ol>
+        </nav>
+    </header>
+    <div id="background">
+        <div class="background nav">
+            <div>
+                <nav id="side-nav">
+                    <button>Entrar</button>
+                    <button>Buscar</button>
+                </nav>
+            </div>
+        </div>
+        <main>
+            <div id="container">
+                <h1>Pokédex</h1>
+                <div id="search-container">
+                    <div id="search-left-container">
+                        <div id="search-input">
+                            <label id="label-search" for="search_bar">Nome ou numéro</label>
+                            <div id="container-button">
+                                <input id="search-bar" type="text" />
+                                <input id="search-button" type="button" value="" />
+                            </div>
+                        </div>
+                        <p id="search-text">
+                            Use a pesquisa avançada para explorar Pokémon por tipo, fraqueza,
+                            habilidade e mais!
+                        </p>
+                    </div>
+                    <div id="search-info">
+                        <p>
+                            Realize a busca por Pokémon pelo nome ou usando o número do Pokédex
+                            Nacional
+                        </p>
+                    </div>
+                </div>
+                <div class="advanced-search">
+                    <p>Mostrar busca avançada</p>
+                    <img src="" alt="advanced-search icon">
+                </div>
+                <div clas="buttons-container">
+                    <button>Surpreenda-me</button>
+                    <label for="filter-list">Organizar por:</label>
+                    <select name="filter-list">
+                        <option class="filter-list option" value="0">Menor número primeiro</option>
+                        <option class="filter-list option" value="1">Maior número primeiro</option>
+                        <option class="filter-list option" value="2">A-Z</option>
+                        <option class="filter-list option" value="3">Z-A</option>
+                    </select>
+
+                </div>
+                <div class="pokemons-background">
+
+                    <button>Carregar mais Pokémon</button>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div class="company">
+                <p clas="company-title"></p>
+                <p class="company text"></p>
+                <p class="company text"></p>
+                <p class="company text"></p>
+                <p class="company text"></p>
+                <p class="company text"></p>
+            </div>
+            <div class="social-media-icons">
+                <img src="" alt="facebook">
+                <img src="" alt="youtube">
+                <img src="" alt="twitter">
+                <img src="" alt="instagram">
+            </div>
+            <div class="information">
+                <img src="" alt="safety">
+                <p id="terms">Termos de uso</p>
+                <p id="privacy">Aviso de Privacidade</p>
+                <p id="cookies">Página de Cookies</p>
+                <p id="legal-info">Informações legais</p>
+                <p id="copyright">@2023 Pokémon. c 1995 - 2023 Nintendo/Creatures Inc.
+                    /GAME FREAK inc. TM, r Nintendo.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+<script src="./js/scripts.js"></script>
+
+</html>
