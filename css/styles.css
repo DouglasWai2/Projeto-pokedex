@@ -228,6 +228,7 @@ h1{
     background-color: #616161;
     height: 4em;
     margin: 0 -150px;
+    margin-bottom: -1px;
     display: flex;
     justify-content: center;
     padding-top: 3.2em;
@@ -247,44 +248,35 @@ h1{
     background-color: #fff;
     border-radius: 50%;
     cursor: pointer;
+    
 }
 #span-border-container{
-    width: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
     
+    height: 18px;
+    width: 100%;  
 }
 
 #span-border-middle{
     text-align: center;
     background-color: #616161;
-    height: 15px;
-    width: 350px;
+    height: 18px;
+    width: 429px;
 
-}
-
-#span-border-right, #span-border-left{
-    width: 15px;
-    height: 15px;
-}
-
-#span-border-right{
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 15px 15px 0 0;
-    border-color: #616161 transparent transparent transparent;
 }
 
 #span-border-left{
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 15px 15px 0;
-    border-color: transparent #616161 transparent transparent;
-    border-bottom-left-radius:20px;
+    height: 100%;
+    transform: rotate(-180deg);
+    transform: rotateX(180deg);
+
+}
+
+#span-border-right{
+    height: 100%;
+    transform: rotate(-180deg);
 }
 
 .buttons-container{
