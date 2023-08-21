@@ -15,7 +15,7 @@
 <body>
     <header>
         <nav id="navbar">
-            <ol>
+            <ol class="container">
                 <li class="menu-item display-flex-column grey radius-left">
                     <span class="header-icon image transition">
                         <img src="./assets/icons8-pikachu-48.png" alt="pikachu-icon">
@@ -23,7 +23,7 @@
                     <span class="header-icon text">Página Inicial</span> <a href="#"></a>
                 </li>
                 <li class="menu-item display-flex-column red">
-                    <span class="header-icon image transition">
+                    <span class="header-icon image transition active">
                         <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon">
                     </span>
                     <span class="header-icon text"></span>Pokedex</span> <a href="#"></a>
@@ -51,93 +51,79 @@
         </nav>
     </header>
     <div id="background">
-        <main>          
-            <div class="background nav">
-                <div>
-                    <nav id="side-nav">
-                        <button>Entrar</button>
-                        <button>Buscar</button>
-                    </nav>
+        <main class="main" id="main">
+                <div class="background nav">
+                    <div>
+                        <nav id="side-nav">
+                            <button>Entrar</button>
+                            <button>Buscar</button>
+                        </nav>
+                    </div>
                 </div>
-            </div>
-            <div id="container">
-                <h1>Pokédex</h1>
-                <div id="search-container">
-                    <div class="wrapper">
-                    <div id="search-left-container">
-                        <div id="search-input">
-                            <label id="label-search" for="search_bar">Nome ou numéro</label>
-                            <div id="container-button">
-                                <input id="search-bar" type="text" />
-                                <input id="search-button" type="button" value="" />
+                <div id="container">
+                    <h1>Pokédex</h1>
+                    <div id="search-container">
+                        <div class="wrapper container">
+                            <div id="search-left-container">
+                                <div id="search-input">
+                                    <label id="label-search" for="search_bar">Nome ou numéro</label>
+                                    <div id="container-button">
+                                        <input id="search-bar" type="text" />
+                                        <input id="search-button" type="button" value="" />
+                                    </div>
+                                </div>
+                                <p id="search-text">
+                                    Use a pesquisa avançada para explorar Pokémon por tipo, fraqueza,
+                                    habilidade e mais!
+                                </p>
+                            </div>
+                            <div id="search-info">
+                                <p>
+                                    Realize a busca por Pokémon pelo nome ou usando o número do Pokédex
+                                    Nacional.
+                                </p>
                             </div>
                         </div>
-                        <p id="search-text">
-                            Use a pesquisa avançada para explorar Pokémon por tipo, fraqueza,
-                            habilidade e mais!
-                        </p>
                     </div>
-                    <div id="search-info">
-                        <p>
-                            Realize a busca por Pokémon pelo nome ou usando o número do Pokédex
-                            Nacional.
-                        </p>
+                    <div class="advanced-search">
+                        <p>Mostrar busca avançada</p>
+                        <img src="./assets/down-arrow.png" alt="advanced-search icon">
+                    </div>
+                    <div id="span-border-container">
+                        <div id="span-border-left"><img src="./assets/large-notch-darkgray.png"></div>
+                        <div id="span-border-middle"></div>
+                        <div id="span-border-right"><img src="./assets/large-notch-darkgray.png"></div>
+                    </div>
+                    <div class="buttons-container">
+                        <button class="blueButton" id="randomize-button"><img id="randomize-icon"
+                                src="./assets/refresh_2546743.png">Surpreenda-me</button>
+                        <div>
+                            <label class="filter-list-label" for="filter-list">Organizar por</label>
+                            <label class="filter-list-icon" for="filter-list">
+                                <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon"></label>
+                            <select class="filter-list" name="filter-list">
+                                <option class="filter-list option" value="0">Menor número primeiro</option>
+                                <option class="filter-list option" value="1">Maior número primeiro</option>
+                                <option class="filter-list option" value="2">A-Z</option>
+                                <option class="filter-list option" value="3">Z-A</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+                <div class="pokemons-background">
+
                 </div>
-                <div class="advanced-search">
-                    <p>Mostrar busca avançada</p>
-                    <img src="./assets/down-arrow.png" alt="advanced-search icon">
-                </div>
-                <div id="span-border-container">
-                    <div id="span-border-left"><img src="./assets/large-notch-darkgray.png"></div>
-                    <div id="span-border-middle"></div>
-                    <div id="span-border-right"><img src="./assets/large-notch-darkgray.png"></div>
-                </div>
-                <div class="buttons-container">
-                    <button id="randomize-button"><img id="randomize-icon" src="./assets/refresh_2546743.png">Surpreenda-me</button>
-                    <div>                
-                    <label class="filter-list-label" for="filter-list">Organizar por</label>
-                    <label class="filter-list-icon" for="filter-list">
-                        <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon"></label>
-                    <select class="filter-list" name="filter-list">                       
-                        <option class="filter-list option" value="0">Menor número primeiro</option>
-                        <option class="filter-list option" value="1">Maior número primeiro</option>
-                        <option class="filter-list option" value="2">A-Z</option>
-                        <option class="filter-list option" value="3">Z-A</option>
-                    </select>
-                </div>  
-                </div>             
-            </div>
-            <div class="pokemons-background">
-                <div class="pokemon-card">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" class="pokemon-image" alt="bulbasaur">
-                    <p class="pokemon-id">N° 0001</p>
-                    <p class="pokemon-name">Bulbasaur</p>
-                    <span class="pokemon-type color-poison">Poison</span>
-                </div>
-                <div class="pokemon-card">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" class="pokemon-image" alt="bulbasaur">
-                    <p class="pokemon-id">N° 0001</p>
-                    <p class="pokemon-name">Bulbasaur</p>
-                    <span class="pokemon-type color-poison">Poison</span>
-                </div>
-                <div class="pokemon-card">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" class="pokemon-image" alt="bulbasaur">
-                    <p class="pokemon-id">N° 0001</p>
-                    <p class="pokemon-name">Bulbasaur</p>
-                    <span class="pokemon-type color-poison">Poison</span>
-                </div>
-                <div class="pokemon-card">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" class="pokemon-image" alt="bulbasaur">
-                    <p class="pokemon-id">N° 0001</p>
-                    <p class="pokemon-name">Bulbasaur</p>
-                    <span class="pokemon-type color-poison">Poison</span>
-                </div>
-                <!-- <button>Carregar mais Pokémon</button> -->
-            </div>
+                <div class="load-more container">
+                    <button class="blueButton" id="load-more-button" onClick="createPokemons()">Carregar mais Pokémon</button>
+                </div>              
         </main>
+        <div class="main-border container">
+            <span class="main-border-left"></span>
+            <span class="main-border-middle"></span>
+            <span class="main-border-right"></span>
+        </div>
         <footer>
+            <div class="footer-container">
             <div class="company">
                 <p clas="company-title"></p>
                 <p class="company text"></p>
@@ -161,6 +147,7 @@
                 <p id="copyright">@2023 Pokémon. c 1995 - 2023 Nintendo/Creatures Inc.
                     /GAME FREAK inc. TM, r Nintendo.</p>
             </div>
+        </div>
         </footer>
     </div>
 </body>
