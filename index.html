@@ -51,8 +51,7 @@
         </nav>
     </header>
     <div id="background">
-        <main>
-           
+        <main>          
             <div class="background nav">
                 <div>
                     <nav id="side-nav">
@@ -64,6 +63,7 @@
             <div id="container">
                 <h1>Pokédex</h1>
                 <div id="search-container">
+                    <div class="wrapper">
                     <div id="search-left-container">
                         <div id="search-input">
                             <label id="label-search" for="search_bar">Nome ou numéro</label>
@@ -84,6 +84,7 @@
                         </p>
                     </div>
                 </div>
+                </div>
                 <div class="advanced-search">
                     <p>Mostrar busca avançada</p>
                     <img src="./assets/down-arrow.png" alt="advanced-search icon">
@@ -94,21 +95,46 @@
                     <div id="span-border-right"></div>
                 </div>
                 <div class="buttons-container">
-                    <button id="randomize-button"><img id="randomize-icon" src="./assets/refresh_2546743.png">Surpreenda-me</button>                  
+                    <button id="randomize-button"><img id="randomize-icon" src="./assets/refresh_2546743.png">Surpreenda-me</button>
+                    <div>                
                     <label class="filter-list-label" for="filter-list">Organizar por</label>
                     <label class="filter-list-icon" for="filter-list">
                         <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon"></label>
-                    <select class="filter-list" name="filter-list">
-                        
+                    <select class="filter-list" name="filter-list">                       
                         <option class="filter-list option" value="0">Menor número primeiro</option>
                         <option class="filter-list option" value="1">Maior número primeiro</option>
                         <option class="filter-list option" value="2">A-Z</option>
                         <option class="filter-list option" value="3">Z-A</option>
                     </select>
+                </div>  
                 </div>             
             </div>
             <div class="pokemons-background">
-                <button>Carregar mais Pokémon</button>
+                <div class="pokemon-card">
+                    <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png" class="pokemon-image" alt="bulbasaur">
+                    <p class="pokemon-id">N° 0001</p>
+                    <p class="pokemon-name">Bulbasaur</p>
+                    <span class="pokemon-type color-poison">Poison</span>
+                </div>
+                <div class="pokemon-card">
+                    <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png" class="pokemon-image" alt="bulbasaur">
+                    <p class="pokemon-id">N° 0001</p>
+                    <p class="pokemon-name">Bulbasaur</p>
+                    <span class="pokemon-type color-poison">Poison</span>
+                </div>
+                <div class="pokemon-card">
+                    <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png" class="pokemon-image" alt="bulbasaur">
+                    <p class="pokemon-id">N° 0001</p>
+                    <p class="pokemon-name">Bulbasaur</p>
+                    <span class="pokemon-type color-poison">Poison</span>
+                </div>
+                <div class="pokemon-card">
+                    <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png" class="pokemon-image" alt="bulbasaur">
+                    <p class="pokemon-id">N° 0001</p>
+                    <p class="pokemon-name">Bulbasaur</p>
+                    <span class="pokemon-type color-poison">Poison</span>
+                </div>
+                <!-- <button>Carregar mais Pokémon</button> -->
             </div>
         </main>
         <footer>

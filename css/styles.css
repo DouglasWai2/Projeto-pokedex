@@ -14,16 +14,20 @@
 #navbar{
     width: 100%;
     height: 9vh; 
-    position: fixed;
+    position: relative;
     background-color: #fff
 }
 
+.fixed{
+    position: fixed;
+}
+
 ol{
+    max-width: 910px;
+    margin: 0 auto;
     position: relative;
-    left: -50px;
     display: flex;
     align-items: center;
-    justify-content: center;
     color: #313131
 }
 
@@ -114,12 +118,12 @@ li:hover{
 /* Header styling end */
 
 main{
-    width: 1000px;
+    max-width: 1280px;
+    /* position: relative; */
     margin: 0 auto;
-    padding: 10vh 150px;
+    padding:0 150px;
     background-image: url(../assets/container_bg.png);
     background-color: #fff;
-    height: 100vh;
 }
 
 
@@ -136,20 +140,20 @@ main{
 
 
 h1{
+    max-width: 910px;
     background-color: #fff;
     color: #919191;
     font-size: 18pt;
     font-weight: 300;
-    margin: -8px 0;
-    padding: 0.8em 0;
+    margin: -8px auto;
+    padding: 1.2em 0 1em 7px;
     align-content: center;
     vertical-align: middle;
 }
 
 /* Search styling */
 
-#search-container{
-    display: flex;
+#search-container{ 
     margin: 0 -150px;
     padding: 0 150px;
     height: 10em;
@@ -158,14 +162,21 @@ h1{
     gap: 1em;
 }
 
+.wrapper{
+    display: flex;
+    max-width: 910px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 #search-left-container{
     padding: 1em 0;
 }
 
 #label-search{
-    font-size: 16pt;
-    font-weight: 300;
-    margin: 0.5em 0;
+    font-size: 18pt;
+    font-weight: 400;
+    margin: 0.3em 0;
 }
 
 #search-input{
@@ -177,8 +188,8 @@ h1{
     gap: 1em;
 }
 #search-bar{
-    height: 2.7em;
-    width: 250px;
+    height: 3em;
+    width: 350px;
     border-radius: 4px;
     border: 2px solid #616161
 }
@@ -186,8 +197,8 @@ h1{
 #search-button{
     background: url(../assets/input-search-bg.png) no-repeat;
     background-position: center;
-    width: 3em;
-    height: 2.7em;
+    width: 3.2em;
+    height: 3em;
     background-color: #ee6b2f;
     border: none;
     border-radius: 3px;
@@ -195,7 +206,7 @@ h1{
 }
 
 #search-text{
-    font-size: 10pt;
+    font-size: 11pt;
     font-weight: 500;
     padding: 0.5em 0;
 }
@@ -203,9 +214,9 @@ h1{
 #search-info{
     background-color: #4dad5b;
     height: 4.5em;
-    width: 550px;
+    width: 450px;
     border-radius: 5px;
-    font-size: 12pt;
+    font-size: 13pt;
     font-weight: 400;
     margin-top: 1.8em;
     padding: 1em;
@@ -215,12 +226,12 @@ h1{
 
 .advanced-search{
     background-color: #616161;
-    height: 3.5em;
+    height: 4em;
     margin: 0 -150px;
     display: flex;
     justify-content: center;
-    padding-top: 2.8em;
-    font-size: 13px;
+    padding-top: 3.2em;
+    font-size: 12pt;
     font-weight: 300;
     gap: 8px;
     color: #fff;
@@ -278,16 +289,24 @@ h1{
 
 .buttons-container{
     display: flex;
-    width: 100%;
-    margin-top: 20px;
-    justify-content: flex-end;
+    width: 910px;
+    margin: 0 auto;
+    margin-top: -15px;
+    padding: 50px 20px 30px 20px;
+    justify-content: space-between;
+    background-color: #fff;
+}
+
+.buttons-container div{
+    display: flex;
+    align-items: center;
 }
 
 .filter-list-label{
     padding: 6px;
     color: #919191;
     font-weight: 300;
-    margin-right: 15px;
+    margin-right: 20px;
 }
 
 .filter-list-icon img{
@@ -308,13 +327,13 @@ h1{
 .filter-list{
     background-color: #313131;
     color: #fff;
-    height: 30px;
-    font-size: 10pt;
+    height: 40px;
+    width: 250px;
+    font-size: 12pt;
     padding: 5px;
     padding-left: 30px;
     border-bottom: 4px;
     margin-left: -30px;
-    margin-right: 20px;
     border-radius: 5px;
     font-weight: 300;
 }
@@ -324,8 +343,9 @@ h1{
     background-color: #30a7d7;
     border: none;
     color: #fff;
-    width: 250px;
-    height: 35px;
+    width: 350px;
+    height: 45px;
+    font-size: 12pt;
     border-radius: 5px;
     align-items: center;
     justify-content: center;
@@ -340,9 +360,62 @@ h1{
 }
 
 .pokemons-background{
+    width: 910px;
     background-color: #fff;
-    height: 60%;
-    margin-top: -70px;
+    margin: 0 auto;
+    display: flex;
+    padding: 0 13px;
 }
 
+
+.pokemon-card{
+    padding: 15px 7px;
+
+}
+.pokemon-card:hover{
+    animation: bounce 0.2s ease;
+}
+
+.pokemon-image{
+    width: 100%;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+}
+
+.pokemon-id{
+    font-size: 10pt;
+    color: #919191;
+    margin-left: 10px;
+}
+
+.pokemon-name{
+    font-size: 16pt;
+    margin-top: 13px;
+    margin-bottom: 5px;
+    font-weight: 400;
+    margin-left: 10px;
+}
+
+.pokemon-type{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8pt;
+    background-color: #b97fc9;
+    color: #fff;
+    width: 73px;
+    height: 18px;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+@keyframes bounce {
+    0%,  
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
 
