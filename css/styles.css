@@ -20,9 +20,10 @@
 /* Header */
 #navbar{
     width: 100%;
-    height: 9vh; 
+    height: 87px; 
     position: relative;
-    background-color: #fff
+    background-color: #fff;
+    z-index: 9;
 }
 
 .fixed{
@@ -33,15 +34,16 @@ ol{
     position: relative;
     display: flex;
     align-items: center;
+    height: 90px;
     color: #313131
 }
 
 li{
     display: block;
-    width: 120px;
-    height:10vh;
-    margin-bottom: 4px;
+    width: 140px;
+    height:96px;
     cursor: pointer;
+    z-index: 10;
 }
 
 .radius-left{
@@ -57,12 +59,12 @@ li{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 8pt;
+    font-size: 10pt;
     font-weight: 300;
 }
 
 .header-icon img{
-    width: 20px;
+    width: 25px;
     margin: 4px;  
 }
 
@@ -83,8 +85,7 @@ li{
 }
 
 .grey{
-    border-bottom: 6px solid  #919191;
-    
+    border-bottom: 6px solid  #919191;    
 }
 
 .red{
@@ -140,24 +141,87 @@ main{
     position: fixed;
     display: flex;
     flex-direction: column;
-    height: 100px;
-    width: 50px;
-    top: 10em;
-    margin-left: -150px;
+    top: 150px;
+    overflow: hidden;
+    margin-left: -150px;   
+    --b: 0; /* border */
+    --s: 15px; /* size of the cut */
+    --c: rgb(0, 0, 0);
+    width: 57px;
+    clip-path: polygon(0 0,calc(100% - var(--s)) 0,100% var(--s),100% 100%,0 100%);
 }
 
+
+#side-nav:after {
+    content: "";
+    position:absolute;
+    margin:-20px;
+    left: 68px;
+    width:40px;
+    height:40px;
+    transform:rotate(45deg);
+    background-color:#000; /* to see where it is */
+  }
+
+
+#enter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 8pt;
+    height: 100px;
+    width: 57px;
+    background-color: #54b564;
+    color: #fff;
+    overflow: hidden;
+    border: 2px solid #000;
+    border-bottom: none;
+    border-left: none;
+    cursor: pointer;   
+}
+
+#side-search-button{
+    background-color: #616161;
+    overflow: hidden;
+    height: 70px;
+    width: 57px;
+    border: none;
+    border: 2px solid #000;
+    border-top: none;
+    border-left: none;
+    clip-path: polygon(0 0%, 100% 0, 100% 84%, 46% 84%, 30% 100%, 0 100%);
+    cursor: pointer;
+}
+
+#side-search-icon{
+    margin-top: 20px;
+}
+
+#border{
+    background-color: #000;
+    height: 100px;
+    width: 100px;
+    clip-path: polygon(0 29%, 26% 0, 100% 0, 100% 4%, 28% 4%, 6% 29%);
+    margin-top: 13px;
+}
+
+#avatar-icon{
+    width: 35px;
+}
 
 
 h1{
     max-width: 910px;
     background-color: #fff;
     color: #919191;
-    font-size: 18pt;
+    font-size: 20pt;
     font-weight: 300;
-    margin: -8px auto;
-    padding: 1.2em 0 1em 7px;
+    margin: -12px auto;
+    padding: 1.5em 0 1em 7px;
     align-content: center;
     vertical-align: middle;
+    z-index: 10;
 }
 
 /* Search styling */
@@ -531,6 +595,12 @@ h1{
     border-style: solid;
     border-width: 0 8px 6px 0;
     border-color: transparent #fff transparent transparent;
+}
+
+
+.dark:hover{
+    filter:brightness(0.9);
+    transition: 0.2s;
 }
 
 .animate__backInLeft{

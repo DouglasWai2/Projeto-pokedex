@@ -55,8 +55,9 @@
                 <div class="background nav">
                     <div>
                         <nav id="side-nav">
-                            <button>Entrar</button>
-                            <button>Buscar</button>
+                            <button class="dark" id="enter"><img id="avatar-icon" src="https://assets.pokemon.com/static2/_ui/img/chrome/profile-navigation/profile-nav-signup.png" alt="avatar-icon">Entrar</button>
+                            <button class="dark" id="side-search-button"><img id="side-search-icon" src="../assets/input-search-bg.png" alt="search-icon"><div id="border"></div></button>
+                            
                         </nav>
                     </div>
                 </div>
@@ -69,7 +70,7 @@
                                     <label id="label-search" for="search_bar">Nome ou numéro</label>
                                     <div id="container-button">
                                         <input id="search-bar" type="text" />
-                                        <input id="search-button" type="button" value="" />
+                                        <input class="dark" id="search-button" type="button" value="" />
                                     </div>
                                 </div>
                                 <p id="search-text">
@@ -95,7 +96,7 @@
                         <div id="span-border-right"><img src="./assets/large-notch-darkgray.png"></div>
                     </div>
                     <div class="buttons-container">
-                        <button class="blueButton" id="randomize-button"><img id="randomize-icon"
+                        <button class="blueButton dark" id="randomize-button"><img id="randomize-icon"
                                 src="./assets/refresh_2546743.png">Surpreenda-me</button>
                         <div>
                             <label class="filter-list-label" for="filter-list">Organizar por</label>
@@ -114,7 +115,7 @@
 
                 </div>
                 <div class="load-more container">
-                    <button class="blueButton" id="load-more-button" onClick="createPokemons()">Carregar mais Pokémon</button>
+                    <button class="blueButton dark" id="load-more-button" onClick="createPokemons()">Carregar mais Pokémon</button>
                 </div>              
         </main>
         <div class="main-border container">
@@ -143,9 +144,8 @@
                 <p id="terms">Termos de uso</p>
                 <p id="privacy">Aviso de Privacidade</p>
                 <p id="cookies">Página de Cookies</p>
-                <p id="legal-info">Informações legais</p>
-                <p id="copyright">@2023 Pokémon. c 1995 - 2023 Nintendo/Creatures Inc.
-                    /GAME FREAK inc. TM, r Nintendo.</p>
+                <p id="legal-info">Site criado apenas para fins de estudo, sem intenção de infringir direitos autorais.</p>
+                <p id="copyright">Douglas Wai 2023</p>
             </div>
         </div>
         </footer>

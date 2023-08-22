@@ -55,15 +55,6 @@ function createTypes(types){
     return pokemonType
 }
 
-
-function removeClassByPrefix(el, prefix) {
-    console.log('here');
-     var regx = new RegExp('\b' + prefix + '.*?\b', 'g');
-     el.className = el.className.replace(regx, '');
-     return el;
- }
-
-
 function removeAnimation(){    
     let elements = document.querySelectorAll('[class^="pokemon-card animate"]')
     console.log(elements)
