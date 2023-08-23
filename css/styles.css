@@ -442,7 +442,7 @@ h1{
 
 
 
-.pokemon-card:hover{
+.bounce:hover{
     animation: bounce 0.2s ease;
 }
 
@@ -450,6 +450,7 @@ h1{
     width: 100%;
     background-color: #f2f2f2;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .pokemon-id{
@@ -677,7 +678,7 @@ h1{
         transform: translateY(0);
     }
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-6px);
     }
 }
 
