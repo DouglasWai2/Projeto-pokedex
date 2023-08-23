@@ -1,51 +1,32 @@
-let i = 1
-let limitPokemons = 1000
+import pokemon from "../pokemonsObj.json" assert { type: "json" };
 let limitCards = 12
-let pokemonName = []  
-let pokemonTypes = []  
-let pokemonId = []
-let pokemon = [] 
 let j = 0 
-
-async function getPokemon(num){     
-        for(i ; i < num ; i++){     
-            // Get pokemons from api 
-                const response = await fetch (`https://pokeapi.co/api/v2/pokemon-form/${i}/`);
-                const pokemons = await response.json();
-                pokemonName.push(pokemons.name.charAt(0).toUpperCase() + pokemons.name.slice(1));
-                pokemonTypes.push(getTypes(pokemons.types))
-                pokemonId.push(i)                
-                if (i === 12) {
-                    createPokemons()
-                }
-        }
-}
+let searchStatus = false
+let pokemonsOnScreen = []
 
 
-function createCards(arr){     
+createPokemons()
+
+function createCards(arr, y, limit){     
     var cards = ""
-    for ( j ; j < limitCards; j++){
+    for (y ; y < limit; y++){
         // Create new cards and add pokemons
-        cards += `<div id="pokemon-${arr.id[j]}" class="pokemon-card animate__${randomAnimate()}">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${arr.id[j]}.png" class="pokemon-image" alt="${arr.name[j]}">
-        <p class="pokemon-id">N° ${String(arr.id[j]).padStart(4,'0')}</p>
-        <p class="pokemon-name">${arr.name[j]}</p>
-        <div class="pokemon-type-container">${createTypes(arr.type[j])}</div>
-        </div>`         
+        cards += `<div id="pokemon-${arr[y].id}" class="pokemon-card animate__${randomAnimate()}">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${arr[y].id}.png" class="pokemon-image" alt="${arr[y].name}">
+        <p class="pokemon-id">N° ${String(arr[y].id).padStart(4,'0')}</p>
+        <p class="pokemon-name">${arr[y].name}</p>
+        <div class="pokemon-type-container">${createTypes(arr[y].type)}</div>
+        </div>`
+        
+        pokemonsOnScreen.push(arr[y])
+        console.log(pokemonsOnScreen)
     }
-    limitCards += 12
+    j = limitCards
+    limitCards += 12   
     return cards
 }
 
-getPokemon(limitPokemons)
 
-function getTypes(pokemonTypes){
-    let types = []
-    pokemonTypes.forEach((type) =>
-    types.push(type.type.name)
-    )
-    return types
-}
 
 function createTypes(types){
     let pokemonType = ""
@@ -57,7 +38,6 @@ function createTypes(types){
 
 function removeAnimation(){    
     let elements = document.querySelectorAll('[class^="pokemon-card animate"]')
-    console.log(elements)
     elements.forEach((element) => {
             element.classList.remove(element.classList[1]);
     });
@@ -70,26 +50,101 @@ function randomAnimate(){
     return animateArr[id]
 }
 
-function createPokemons(){
+function createPokemons(pokemons = pokemon, k = j, limit = limitCards, search = false){
     try {
-    pokemon = {
-        name: pokemonName,
-        type: pokemonTypes,
-        id: pokemonId
+        let cards = createCards(pokemons, k, limit)
+        if(search || k < 12){
+            document.querySelector('.pokemons-background').innerHTML = cards
+        }else{
+            document.querySelector('.pokemons-background').innerHTML += cards
+        }
     }
-    console.log(pokemon)
-    let cards = createCards(pokemon)
-    document.querySelector('.pokemons-background').innerHTML += cards
-    }
- catch (error) {
-    document.querySelector('.pokemons-background').innerHTML = '<p>Deu erro caraio</p>'
+    catch (error) {
+        document.querySelector('.pokemons-background').innerHTML = '<p>ERROR! Unable to load pokemons./p>'
 } finally{
-    setTimeout(() => {
-        removeAnimation() 
+        setTimeout(() => {
+            removeAnimation() 
     }, 301);     
 }
+}
 
+function buttonClick() {
+    document.querySelector('#load-more-button').addEventListener("click", ()=> {
+        createPokemons()
+        const button = document.querySelector('#load-more-button')
+        button.remove()
+    })   
+}
+buttonClick()
+
+window.onscroll = function() {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+        if(!document.querySelector('#load-more-button') && !searchStatus){
+            createPokemons()
+        }
+    }
 }
 
 
-addEventListener("scrollend", (event) => {})
+function regexSearch(search){
+    const searchObject = pokemon.filter((pokemon) => {
+        switch (containsOnlyNumbers(search)){
+            case true:
+                return pokemon.id == search
+            case false:
+                return pokemon.name.toUpperCase().includes(search.toUpperCase())
+        }
+    });
+    console.log(searchObject)
+    return searchObject
+}
+
+function searchPokemon(){ 
+    const search = document.querySelector('#search-bar').value
+    if(search.trim().length){  
+        const matches = regexSearch(search)
+        searchStatus = true
+        console.log(matches.length)
+            if (matches.length){
+                pokemonsOnScreen = []
+                createPokemons(matches, 0, matches.length, searchStatus)
+                const button = document.querySelector('#load-more-button')
+                button.remove()              
+            } else{
+                document.querySelector('.pokemons-background').innerHTML = '<p>ERROR! Pokemon não existe.</p>'
+            }
+    }
+    return
+}     
+
+
+document.querySelector('#search-button').addEventListener('click', () => {searchPokemon()})
+document.querySelector('#search-bar').addEventListener('keypress', (e) => {
+    if(e.key === 'Enter'){
+        searchPokemon()
+    }
+})
+
+document.querySelector('.filter-list').addEventListener('change', () => {
+    const filter = document.querySelector('.filter-list').value
+    if(filter === 'Max'){
+        if(!searchStatus){
+        revertList(pokemon)
+        }else{
+        revertList(pokemonsOnScreen)
+        }
+    }
+    }
+)
+
+function revertList(arr){
+    if(!searchStatus){
+    createPokemons(arr.reverse(), 0, 12, false)
+    } else{
+        createPokemons(arr.reverse(), 0, arr.length, true)
+    }
+}
+
+function containsOnlyNumbers(str) {
+    return /^\d+$/.test(str);
+}

@@ -1,4 +1,3 @@
-
 *{
     margin: 0;
     padding: 0;
@@ -259,10 +258,11 @@ h1{
     gap: 1em;
 }
 #search-bar{
-    height: 3em;
+    height: 2.5em;
     width: 350px;
     border-radius: 4px;
-    border: 2px solid #616161
+    border: 2px solid #616161;
+    font-size: 12pt;
 }
 
 #search-button{
@@ -604,16 +604,16 @@ h1{
 }
 
 .animate__backInLeft{
-    animation: backInLeft 0.3s ease-in-out, appear 0.5s ease-in;
+    animation: backInLeft 0.3s ease-in-out, appear 0.3s ease-in;
 }
 .animate__backInRight{
-    animation: backInRight 0.3s ease-in-out, appear 0.5s ease-in;
+    animation: backInRight 0.3s ease-in-out, appear 0.3s ease-in;
 }
 .animate__backInUp{
-    animation: backInUp 0.3s ease-in-out, appear 0.5s ease-in;
+    animation: backInUp 0.3s ease-in-out, appear 0.3s ease-in;
 }
 .animate__backInDown{
-    animation: backInDown 0.3s ease-in-out, appear 0.5s ease-in;
+    animation: backInDown 0.3s ease-in-out, appear 0.3s ease-in;
 }
 
 .footer-container{

@@ -70,7 +70,7 @@
                                     <label id="label-search" for="search_bar">Nome ou numéro</label>
                                     <div id="container-button">
                                         <input id="search-bar" type="text" />
-                                        <input class="dark" id="search-button" type="button" value="" />
+                                        <input class="dark" id="search-button" type="button" value=""  />
                                     </div>
                                 </div>
                                 <p id="search-text">
@@ -103,10 +103,10 @@
                             <label class="filter-list-icon" for="filter-list">
                                 <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon"></label>
                             <select class="filter-list" name="filter-list">
-                                <option class="filter-list option" value="0">Menor número primeiro</option>
-                                <option class="filter-list option" value="1">Maior número primeiro</option>
-                                <option class="filter-list option" value="2">A-Z</option>
-                                <option class="filter-list option" value="3">Z-A</option>
+                                <option class="filter-list-option" value="Min">Menor número primeiro</option>
+                                <option class="filter-list-option" value="Max">Maior número primeiro</option>
+                                <option class="filter-list-option" value="a-z">A-Z</option>
+                                <option class="filter-list-option" value="z-a">Z-A</option>
                             </select>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
 
                 </div>
                 <div class="load-more container">
-                    <button class="blueButton dark" id="load-more-button" onClick="createPokemons()">Carregar mais Pokémon</button>
+                    <button class="blueButton dark" id="load-more-button">Carregar mais Pokémon</button>
                 </div>              
         </main>
         <div class="main-border container">
@@ -151,6 +151,5 @@
         </footer>
     </div>
 </body>
-<script src="./js/scripts.js"></script>
-
+<script type="module" src="./js/scripts.js"></script>
 </html>
