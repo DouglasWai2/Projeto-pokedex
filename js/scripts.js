@@ -1,12 +1,27 @@
-import pokemon from "../pokemonsObj.json" assert { type: "json" };
+import pokemonDB from "../pokemonsObjAll.json" assert { type: "json" };
 let limitCards = 12
 let j = 0 
 let searchStatus = false
-let reversedStatus = false
 let pokemonsOnScreen = []
 let filterStatus = false
-createPokemons()
+let currentStatus = ''
+const uniqueIds = [];
+let pokemon = pokemonDB.filter(element => {
+  const isDuplicate = uniqueIds.includes(element.id);
 
+  if (!isDuplicate) {
+    uniqueIds.push(element.id);
+
+    return true;
+  }
+
+  return false;
+});
+
+// 👇️ [{id: 1, name: 'Tom'}, {id: 2, name: 'Nick'}]
+console.log(pokemon)
+
+createPokemons()
 function createPokemons(pokemons = pokemon, k = j, limit = limitCards, search = false){
     try {
         let cards = createCards(pokemons, k, limit)
@@ -18,6 +33,7 @@ function createPokemons(pokemons = pokemon, k = j, limit = limitCards, search = 
     }
     catch (error) {
         document.querySelector('.pokemons-background').innerHTML = '<p>ERROR! Unable to load pokemons.</p>'
+        console.log(error)
 } finally{
         setTimeout(() => {
             removeAnimation() 
@@ -29,6 +45,7 @@ function createCards(arr, y, limit){
     var cards = ""
     for (y ; y < limit; y++){
         // Create new cards and add pokemons
+        
         cards += `<div id="pokemon-${arr[y].id}" class="pokemon-card animate__${randomAnimate()}">
         <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${arr[y].id}.png" class="pokemon-image" alt="${arr[y].name}">
         <p class="pokemon-id">N° ${String(arr[y].id).padStart(4,'0')}</p>
@@ -36,7 +53,7 @@ function createCards(arr, y, limit){
         <div class="pokemon-type-container">${createTypes(arr[y].type)}</div>
         </div>`
         if(!filterStatus){    
-        pokemonsOnScreen.push(arr[y])
+            pokemonsOnScreen.push(arr[y])
         }        
     }
     j = limitCards
@@ -61,7 +78,6 @@ window.onscroll = function() {
     }
 }
 
-
 function pokemonSearch(search){
     const searchObject = pokemon.filter((pokemon) => {       
         switch (containsOnlyNumbers(search)){
@@ -79,26 +95,37 @@ function searchPokemon(){
     if(search.trim().length){  
         const matches = pokemonSearch(search)
         searchStatus = true
-            if (matches.length){
+            if (matches.length && currentStatus === ''){
                 pokemonsOnScreen = []
-                filterStatus = false
                 createPokemons(matches, 0, matches.length, searchStatus)
                 const button = document.querySelector('#load-more-button')
                 button.remove()              
-            }
-            else if (matches.length && filterStatus){
+            }else if (matches.length && currentStatus.length){
                 pokemonsOnScreen = []
-                matches.sort(function(a,b){
-
-                })
-                
-
-            } 
-            else {
-            document.querySelector('.pokemons-background').innerHTML = '<p>ERROR! Pokemon não existe.</p>'
+                if(currentStatus === 'a-z' || currentStatus === 'z-a'){
+                    if(currentStatus === 'a-z'){
+                        matches.sort(byNameAlpha)   
+                    }else{
+                        matches.sort(byNameAlpha).reverse()    
+                    }           
+                }else if(currentStatus === 'Max' || currentStatus === 'Min'){
+                    if(currentStatus === 'Max'){
+                        matches.sort(byIdOrder).reverse()
+                    }else{
+                        matches.sort(byIdOrder)  
+                    }           
+                }
+                filterStatus = false
+                createPokemons(matches, 0, matches.length, searchStatus)
+                const button = document.querySelector('#load-more-button')
+                button.remove()             
+            }else {
+                document.querySelector('.pokemons-background').innerHTML = '<p>ERROR! Pokemon não existe.</p>'
             }
-            return
-    }     
+            
+    }else {
+        location.reload()
+    }
 }
 
 
@@ -113,72 +140,45 @@ document.querySelector('#search-bar').addEventListener('keypress', (e) => {
 
 // Filter event listener
 document.querySelector('.filter-list').addEventListener('change', () => {
-    const filter = document.querySelector('.filter-list').value
-    limitCards = 12
+    const filter = document.querySelector('.filter-list').value;
+    limitCards = 12;
     filterStatus = true
-    if(filter === 'Max'){
+    currentStatus = filter;
+    console.log(currentStatus);
+    if(filter === 'Max' || filter === 'Min'){      
         if(!searchStatus){
-            pokemon.sort(function(a , b){
-                if(a.id > b.id) return -1;
-                if(a.id < b.id) return 1;
-                return 0;
-            });
-            createPokemons(pokemon, 0 , 12)
+            if(filter === 'Max'){
+                pokemon.sort(byIdOrder).reverse();
+            }else{
+                pokemon.sort(byIdOrder);
+            }
+            createPokemons(pokemon, 0 , 12);
         }else{
-            pokemonsOnScreen.sort(function(a , b){
-                if(a.id > b.id) return -1;
-                if(a.id < b.id) return 1;
-                return 0;
-            });
+            if(filter === 'Max'){
+                pokemonsOnScreen.sort(byIdOrder).reverse();
+            }else{
+                pokemonsOnScreen.sort(byIdOrder);
+            }
             createPokemons(pokemonsOnScreen, 0, pokemonsOnScreen.length, true)
         }
-    reversedStatus = true
-    }
-    else if (filter === 'Min'){
+    }else if (filter === 'a-z' || filter === 'z-a'){
         if(!searchStatus){
-            pokemon.sort(function(a , b){
-                if(a.id > b.id) return 1;
-                if(a.id < b.id) return -1;
-                return 0;
-            });
+            if(filter === 'a-z'){
+                pokemon.sort(byNameAlpha)
+            }else{
+                pokemon.sort(byNameAlpha).reverse()
+            }
             createPokemons(pokemon, 0, 12)
         }else{
-            pokemonsOnScreen.sort(function(a , b){
-                if(a.id > b.id) return 1;
-                if(a.id < b.id) return -1;
-                return 0;
-            })
-            createPokemons(pokemonsOnScreen, 0, pokemonsOnScreen.length, true)           
-        }
-    reversedStatus = false  
-    }
-    else if (filter === 'a-z' || filter === 'z-a'){
-        if(!searchStatus){
-            pokemon.sort(function(a, b) {
-                var textA = a.name.toUpperCase();
-                var textB = b.name.toUpperCase();
-                if(filter === 'a-z'){
-                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-                }else{
-                    return (textA < textB) ? 1 : (textA > textB) ? -1 : 0;
-                }
-            });
-            createPokemons(pokemon, 0, 12)
-        }else{
-            pokemonsOnScreen.sort(function(a, b) {
-                var textA = a.name.toUpperCase();
-                var textB = b.name.toUpperCase();
-                if(filter === 'a-z'){
-                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-                }else{
-                    return (textA < textB) ? 1 : (textA > textB) ? -1 : 0;
-                }
-            })
+            if(filter === 'a-z'){
+                pokemonsOnScreen.sort(byNameAlpha)
+            }else{
+                pokemonsOnScreen.sort(byNameAlpha).reverse()
+            }
             createPokemons(pokemonsOnScreen, 0, pokemonsOnScreen.length)
         }
     }         
-    }
-)
+})
 
 
 function containsOnlyNumbers(str) {
@@ -196,8 +196,8 @@ function createTypes(types){
 function removeAnimation(){    
     let elements = document.querySelectorAll('[class^="pokemon-card animate"]')
     elements.forEach((element) => {
-            element.classList.remove(element.classList[1]);
-            element.classList.add('bounce')
+        element.classList.remove(element.classList[1]);
+        element.classList.add('bounce')
     });
 }
 
@@ -209,26 +209,24 @@ function randomAnimate(){
 }
 
 
-// const sortByProp = function(prop){
-//     return function(a,b){
-//       if(typeof a[prop] === 'number')
-//         return a[prop]-b[prop];
+
+// Sort function
+const sortByProp = function(prop){
+    return function(a,b){
+      if(typeof a[prop] === 'number')
+        return a[prop]-b[prop];
   
-//       return a[prop].localeCompare(b[prop]); 
-//     } 
-//   }
+      return a[prop].localeCompare(b[prop]); 
+    } 
+}
 
-//   const byName = sortByProp('name')
-//   const byId = sortByProp('id')
+const byName = sortByProp('name')
+const byId = sortByProp('id')
 
-//   const byNameAlpha = function(a,b) {
-//     return byName (a, b)
-//   }
+const byNameAlpha = function(a,b) {
+    return byName (a, b)
+}
 
-//   const byIdOrder = function (a,b) {
-//     return byId (a,b)
-//   }
-
-// pokemon.sort(byNameAlpha)
-// pokemon.sort(byIdOrder)
-
+const byIdOrder = function (a,b) {
+    return byId (a,b)
+}
