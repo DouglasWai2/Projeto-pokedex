@@ -139,7 +139,7 @@ document.querySelector('.filter-list').addEventListener('change', () => {
 
 function revertList(arr){
     if(!searchStatus){
-    createPokemons(arr.reverse(), 0, 12, false)
+    createPokemons(arr.reverse(), 0, 12,)
     } else{
         createPokemons(arr.reverse(), 0, arr.length, true)
     }
