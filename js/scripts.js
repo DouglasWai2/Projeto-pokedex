@@ -79,21 +79,22 @@ function searchPokemon(){
     if(search.trim().length){  
         const matches = pokemonSearch(search)
         searchStatus = true
-            if (matches.length && !reversedStatus){
+            if (matches.length){
                 pokemonsOnScreen = []
                 filterStatus = false
                 createPokemons(matches, 0, matches.length, searchStatus)
                 const button = document.querySelector('#load-more-button')
                 button.remove()              
-            } else if (matches.length && reversedStatus){
+            }
+            else if (matches.length && filterStatus){
                 pokemonsOnScreen = []
-                filterStatus = false
-                // createPokemons(matches, 0, matches.length, searchStatus)
-                matches.reverse()
-                createPokemons(matches, 0, matches.length, searchStatus)
-                const button = document.querySelector('#load-more-button')
-                button.remove()                     
-            }else {
+                matches.sort(function(a,b){
+
+                })
+                
+
+            } 
+            else {
             document.querySelector('.pokemons-background').innerHTML = '<p>ERROR! Pokemon não existe.</p>'
             }
             return
@@ -110,12 +111,11 @@ document.querySelector('#search-bar').addEventListener('keypress', (e) => {
 })
 
 
-// Select option event listener
+// Filter event listener
 document.querySelector('.filter-list').addEventListener('change', () => {
     const filter = document.querySelector('.filter-list').value
     limitCards = 12
     filterStatus = true
-    console.log(filter)
     if(filter === 'Max'){
         if(!searchStatus){
             pokemon.sort(function(a , b){
@@ -125,20 +125,24 @@ document.querySelector('.filter-list').addEventListener('change', () => {
             });
             createPokemons(pokemon, 0 , 12)
         }else{
-            pokemonsOnScreen.reverse()
+            pokemonsOnScreen.sort(function(a , b){
+                if(a.id > b.id) return -1;
+                if(a.id < b.id) return 1;
+                return 0;
+            });
             createPokemons(pokemonsOnScreen, 0, pokemonsOnScreen.length, true)
         }
-        reversedStatus = true
+    reversedStatus = true
     }
     else if (filter === 'Min'){
-        if(reversedStatus && !searchStatus){
+        if(!searchStatus){
             pokemon.sort(function(a , b){
                 if(a.id > b.id) return 1;
                 if(a.id < b.id) return -1;
                 return 0;
             });
             createPokemons(pokemon, 0, 12)
-        }else if (reversedStatus, searchStatus){
+        }else{
             pokemonsOnScreen.sort(function(a , b){
                 if(a.id > b.id) return 1;
                 if(a.id < b.id) return -1;
@@ -148,28 +152,6 @@ document.querySelector('.filter-list').addEventListener('change', () => {
         }
     reversedStatus = false  
     }
-    // else if (filter === "a-z"){
-    //     if(!searchStatus){
-    //         pokemon.sort(function(a, b) {
-    //             var textA = a.name.toUpperCase();
-    //             var textB = b.name.toUpperCase();
-    //             return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-    //         });
-    //         createPokemons(pokemon, 0, 12)
-    //         reversedStatus = true
-    //     }
-    // }
-    // else if (filter === 'z-a'){
-    //     if(!searchStatus){
-    //         pokemon.sort(function(a, b) {
-    //             var textA = a.name.toUpperCase();
-    //             var textB = b.name.toUpperCase();
-    //             return (textA < textB) ? 1 : (textA > textB) ? -1 : 0;
-    //         });
-    //         createPokemons(pokemon, 0, 12)
-    //         reversedStatus = true
-    //     }
-    // }
     else if (filter === 'a-z' || filter === 'z-a'){
         if(!searchStatus){
             pokemon.sort(function(a, b) {
@@ -182,16 +164,22 @@ document.querySelector('.filter-list').addEventListener('change', () => {
                 }
             });
             createPokemons(pokemon, 0, 12)
-            reversedStatus = true
+        }else{
+            pokemonsOnScreen.sort(function(a, b) {
+                var textA = a.name.toUpperCase();
+                var textB = b.name.toUpperCase();
+                if(filter === 'a-z'){
+                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                }else{
+                    return (textA < textB) ? 1 : (textA > textB) ? -1 : 0;
+                }
+            })
+            createPokemons(pokemonsOnScreen, 0, pokemonsOnScreen.length)
         }
     }         
     }
 )
 
-// function revertList(arr){
-//     let reversedList = arr.reverse()
-//     return reversedList
-// }
 
 function containsOnlyNumbers(str) {
     return /^\d+$/.test(str);
@@ -221,11 +209,26 @@ function randomAnimate(){
 }
 
 
-const sortByProp = function(prop){
-    return function(a,b){
-      if(typeof a[prop] === 'number')
-        return a[prop]-b[prop];
+// const sortByProp = function(prop){
+//     return function(a,b){
+//       if(typeof a[prop] === 'number')
+//         return a[prop]-b[prop];
   
-      return a[prop].localeCompare(b[prop]); 
-    } 
-  }
+//       return a[prop].localeCompare(b[prop]); 
+//     } 
+//   }
+
+//   const byName = sortByProp('name')
+//   const byId = sortByProp('id')
+
+//   const byNameAlpha = function(a,b) {
+//     return byName (a, b)
+//   }
+
+//   const byIdOrder = function (a,b) {
+//     return byId (a,b)
+//   }
+
+// pokemon.sort(byNameAlpha)
+// pokemon.sort(byIdOrder)
+
