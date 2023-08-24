@@ -52,71 +52,82 @@
     </header>
     <div id="background">
         <main class="main" id="main">
-                <div class="background nav">
-                    <div>
-                        <nav id="side-nav">
-                            <button class="dark" id="enter"><img id="avatar-icon" src="https://assets.pokemon.com/static2/_ui/img/chrome/profile-navigation/profile-nav-signup.png" alt="avatar-icon">Entrar</button>
-                            <button class="dark" id="side-search-button"><img id="side-search-icon" src="../assets/input-search-bg.png" alt="search-icon"><div id="border"></div></button>
-                            
-                        </nav>
-                    </div>
+            <div class="background nav">
+                <div>
+                    <nav id="side-nav">
+                        <button class="dark" id="enter"><img id="avatar-icon"
+                                src="https://assets.pokemon.com/static2/_ui/img/chrome/profile-navigation/profile-nav-signup.png"
+                                alt="avatar-icon">Entrar</button>
+                        <button class="dark" id="side-search-button"><img id="side-search-icon"
+                                src="../assets/input-search-bg.png" alt="search-icon">
+                            <div id="border"></div>
+                        </button>
+
+                    </nav>
                 </div>
-                <div id="container">
-                    <h1>Pokédex</h1>
-                    <div id="search-container">
-                        <div class="wrapper container">
-                            <div id="search-left-container">
-                                <div id="search-input">
-                                    <label id="label-search" for="search_bar">Nome ou numéro</label>
-                                    <div id="container-button">
-                                        <input id="search-bar" type="text" />
-                                        <input class="dark" id="search-button" type="button" value=""  />
-                                    </div>
+            </div>
+            <div id="container">
+                <h1>Pokédex</h1>
+                <div id="search-container">
+                    <div class="wrapper container">
+                        <div id="search-left-container">
+                            <div id="search-input">
+                                <label id="label-search" for="search_bar">Nome ou numéro</label>
+                                <div id="container-button">
+                                    <input id="search-bar" type="text" />
+                                    <input class="dark" id="search-button" type="button" value="" />
                                 </div>
-                                <p id="search-text">
-                                    Use a pesquisa avançada para explorar Pokémon por tipo, fraqueza,
-                                    habilidade e mais!
-                                </p>
                             </div>
-                            <div id="search-info">
-                                <p>
-                                    Realize a busca por Pokémon pelo nome ou usando o número do Pokédex
-                                    Nacional.
-                                </p>
-                            </div>
+                            <p id="search-text">
+                                Use a pesquisa avançada para explorar Pokémon por tipo, fraqueza,
+                                habilidade e mais!
+                            </p>
+                        </div>
+                        <div id="search-info">
+                            <p>
+                                Realize a busca por Pokémon pelo nome ou usando o número do Pokédex
+                                Nacional.
+                            </p>
                         </div>
                     </div>
-                    <div class="advanced-search">
-                        <p>Mostrar busca avançada</p>
+                </div>
+                <div class="advanced-search">
+                    <div class="advanced-search-container">
+                    
+                </div>
+                    <div class="advanced-search-bar">
+                        <p id="advanced-search-text">Mostrar busca avançada</p>
                         <img src="./assets/down-arrow.png" alt="advanced-search icon">
                     </div>
-                    <div id="span-border-container">
-                        <div id="span-border-left"><img src="./assets/large-notch-darkgray.png"></div>
-                        <div id="span-border-middle"></div>
-                        <div id="span-border-right"><img src="./assets/large-notch-darkgray.png"></div>
-                    </div>
-                    <div class="buttons-container">
-                        <button class="blueButton dark" id="randomize-button"><img id="randomize-icon"
-                                src="./assets/refresh_2546743.png">Surpreenda-me</button>
-                        <div>
-                            <label class="filter-list-label" for="filter-list">Organizar por</label>
-                            <label class="filter-list-icon" for="filter-list">
-                                <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon"></label>
-                            <select class="filter-list" name="filter-list">
-                                <option class="filter-list-option" value="Min">Menor número primeiro</option>
-                                <option class="filter-list-option" value="Max">Maior número primeiro</option>
-                                <option class="filter-list-option" value="a-z">A-Z</option>
-                                <option class="filter-list-option" value="z-a">Z-A</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
-                <div class="pokemons-background">
 
+                <div id="span-border-container">
+                    <div id="span-border-left"><img src="./assets/large-notch-darkgray.png"></div>
+                    <div id="span-border-middle"></div>
+                    <div id="span-border-right"><img src="./assets/large-notch-darkgray.png"></div>
                 </div>
-                <div class="load-more container">
-                    <button class="blueButton dark" id="load-more-button">Carregar mais Pokémon</button>
-                </div>              
+                <div class="buttons-container">
+                    <button class="blueButton dark" id="randomize-button"><img id="randomize-icon"
+                            src="./assets/refresh_2546743.png">Surpreenda-me</button>
+                    <div>
+                        <label class="filter-list-label" for="filter-list">Organizar por</label>
+                        <label class="filter-list-icon" for="filter-list">
+                            <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon"></label>
+                        <select id="list-filter" class="filter-list" name="filter-list">
+                            <option class="filter-list-option" value="Min">Menor número primeiro</option>
+                            <option class="filter-list-option" value="Max">Maior número primeiro</option>
+                            <option class="filter-list-option" value="a-z">A-Z</option>
+                            <option class="filter-list-option" value="z-a">Z-A</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="pokemons-background">
+
+            </div>
+            <div class="load-more container">
+                <button class="blueButton dark" id="load-more-button">Carregar mais Pokémon</button>
+            </div>
         </main>
         <div class="main-border container">
             <span class="main-border-left"></span>
@@ -125,31 +136,33 @@
         </div>
         <footer>
             <div class="footer-container">
-            <div class="company">
-                <p clas="company-title"></p>
-                <p class="company text"></p>
-                <p class="company text"></p>
-                <p class="company text"></p>
-                <p class="company text"></p>
-                <p class="company text"></p>
+                <div class="company">
+                    <p clas="company-title"></p>
+                    <p class="company text"></p>
+                    <p class="company text"></p>
+                    <p class="company text"></p>
+                    <p class="company text"></p>
+                    <p class="company text"></p>
+                </div>
+                <div class="social-media-icons">
+                    <img src="" alt="facebook">
+                    <img src="" alt="youtube">
+                    <img src="" alt="twitter">
+                    <img src="" alt="instagram">
+                </div>
+                <div class="information">
+                    <img src="" alt="safety">
+                    <p id="terms">Termos de uso</p>
+                    <p id="privacy">Aviso de Privacidade</p>
+                    <p id="cookies">Página de Cookies</p>
+                    <p id="legal-info">Site criado apenas para fins de estudo, sem intenção de infringir direitos
+                        autorais.</p>
+                    <p id="copyright">Douglas Wai 2023</p>
+                </div>
             </div>
-            <div class="social-media-icons">
-                <img src="" alt="facebook">
-                <img src="" alt="youtube">
-                <img src="" alt="twitter">
-                <img src="" alt="instagram">
-            </div>
-            <div class="information">
-                <img src="" alt="safety">
-                <p id="terms">Termos de uso</p>
-                <p id="privacy">Aviso de Privacidade</p>
-                <p id="cookies">Página de Cookies</p>
-                <p id="legal-info">Site criado apenas para fins de estudo, sem intenção de infringir direitos autorais.</p>
-                <p id="copyright">Douglas Wai 2023</p>
-            </div>
-        </div>
         </footer>
     </div>
 </body>
 <script type="module" src="./js/scripts.js"></script>
+
 </html>
