@@ -18,8 +18,6 @@ let pokemon = pokemonDB.filter(element => {
   return false;
 });
 
-console.log(pokemon)
-
 createPokemons()
 function createPokemons(pokemons = pokemon, k = j, limit = limitCards, search = false){
     try {
@@ -44,7 +42,11 @@ function createCards(arr, y, limit){
     var cards = ""
     for (y ; y < limit; y++){
         // Create new cards and add pokemons
-        
+        if(y >= arr.length){
+            j = limitCards
+            limitCards += 12  
+            return cards
+        }      
         cards += `<div id="pokemon-${arr[y].id}" class="pokemon-card animate__${randomAnimate()}">
         <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${arr[y].id}.png" class="pokemon-image" alt="${arr[y].name}">
         <p class="pokemon-id">N° ${String(arr[y].id).padStart(4,'0')}</p>
@@ -53,7 +55,7 @@ function createCards(arr, y, limit){
         </div>`
         if(!filterStatus){    
             pokemonsOnScreen.push(arr[y])
-        }        
+        }            
     }
     j = limitCards
     limitCards += 12   
@@ -76,6 +78,7 @@ window.onscroll = function() {
         }
     }
 }
+
 
 function pokemonSearch(search){
     const searchObject = pokemon.filter((pokemon) => {       
@@ -179,6 +182,9 @@ document.querySelector('#list-filter').addEventListener('change', () => {
     }         
 })
 
+function capitalizeFirstLetter(str){
+   return str.charAt(0).toUpperCase() + str.slice(1)
+}
 
 function containsOnlyNumbers(str) {
     return /^\d+$/.test(str);
@@ -205,6 +211,26 @@ function randomAnimate(){
     let animateArr = ['backInLeft', 'backInDown', 'backInRight', 'backInUp']
     let id = Math.floor(Math.random() * animateArr.length)
     return animateArr[id]
+}
+
+const advancedSearchType = (type, weakness) => {
+    let searchObject 
+    if(type.length && weakness.length){
+        searchObject= pokemon.filter((pokemon) => {
+            return type.every(elem => pokemon.type.includes(elem)) && 
+            weakness.every(elem => pokemon.weakness.includes(elem))
+        })
+    } else if(!weakness.length){
+        searchObject= pokemon.filter((pokemon) => {
+            return type.every(elem => pokemon.type.includes(elem))
+        })
+    } else if (!type.length){
+        searchObject= pokemon.filter((pokemon) => {
+            return weakness.every(elem => pokemon.weakness.includes(elem))
+        })
+    }
+    console.log(searchObject)
+    return searchObject
 }
 
 
@@ -255,185 +281,257 @@ document.querySelector('.advanced-search-bar').addEventListener('click', () => {
                         <span id="">Bug</span>
                     </td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="bug" class="checkbox-round" type="checkbox">
-                            <input id="weakness" value="bug" class="checkbox-round" type="checkbox">
                             <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
                         </label>
+                        <label class="label-container">
+                            <input id="weakness" value="bug" class="checkbox-round" type="checkbox">       
+                            <span class="checkmark weakness">F</span>
+                        </label>
+                        </div>
                     </td>
                     <td class="color-dark" id="pokemon-type-filter"><span id="">Dark</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="dark" class="checkbox-round" type="checkbox">
-                            <input id="weakness" value="dark" class="checkbox-round" type="checkbox">
                             <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            </label>
+                            <label class="label-container">
+                            <input id="weakness" value="dark" class="checkbox-round" type="checkbox">
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
 
                 </tr>
                 <tr class="advanced-search-row">
                     <td class="color-dragon" id="pokemon-type-filter"><span id="">Dragon</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="dragon" class="checkbox-round" type="checkbox">
-                            <input id="weakness" value="dragon" class="checkbox-round" type="checkbox">
                             <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            </label>
+                            <label class="label-container">
+                            <input id="weakness" value="dragon" class="checkbox-round" type="checkbox">
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                     <td class="color-electric" id="pokemon-type-filter"><span id="">Electric</span>
                     </td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="electric" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="electric" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                 </tr>
                 <tr class="advanced-search-row">
                     <td class="color-fairy" id="pokemon-type-filter"><span id="">Fairy</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="fairy" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="fairy" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                     <td class="color-fighting" id="pokemon-type-filter"><span id="">Fighting</span>
                     </td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="fighting" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="fighting" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                 </tr>
                 <tr class="advanced-search-row">
                     <td class="color-fire" id="pokemon-type-filter"><span id="">Fire</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="fire" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="fire" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                     <td class="color-flying" id="pokemon-type-filter"><span id="">flying</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="flying" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="flying" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                 </tr>
                 <tr class="advanced-search-row">
                     <td class="color-ghost" id="pokemon-type-filter"><span id="">ghost</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="ghost" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="ghost" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                     <td class="color-grass" id="pokemon-type-filter"><span id="">grass</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="grass" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="grass" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                 </tr>
                 <tr class="advanced-search-row">
                     <td class="color-ground" id="pokemon-type-filter"><span id="">ground</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="ground" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="ground" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                     <td class="color-ice" id="pokemon-type-filter"><span id="">ice</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="ice" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="ice" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                 </tr>
                 <tr class="advanced-search-row">
                     <td class="color-normal" id="pokemon-type-filter"><span id="">normal</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="normal" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="normal" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                     <td class="color-poison" id="pokemon-type-filter"><span id="">poison</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="poison" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="poison" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                 </tr>
                 <tr class="advanced-search-row">
                     <td class="color-psychic" id="pokemon-type-filter"><span id="">psychic</span>
                     </td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="psychic" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="psychic" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                     <td class="color-rock" id="pokemon-type-filter"><span id="">rock</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="rock" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="rock" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                 </tr>
                 <tr class="advanced-search-row">
                     <td class="color-steel" id="pokemon-type-filter"><span id="">steel</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="steel" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="steel" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                     <td class="color-water" id="pokemon-type-filter"><span id="">water</span></td>
                     <td id="advanced-search-checkbox">
-                        <label class="input-container">
+                    <div class="input-container">
+                        <label class="label-container">
                             <input id="type" value="water" class="checkbox-round" type="checkbox">
+                            <span class="checkmark type">T</span>
+                            </label>
+                            <label class="label-container">
                             <input id="weakness" value="water" class="checkbox-round" type="checkbox">
-                                                        <span class="checkmark type">T</span>
-                            <span class="checkmark-weakness">F</span>
+                            <span class="checkmark weakness">F</span>
                         </label>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -449,29 +547,29 @@ document.querySelector('.advanced-search-bar').addEventListener('click', () => {
         <p class="advanced-search-label">Altura</p>
         <div class="by-height">           
             <div class="checkbox-image-container">
-                <img src="../assets/033.png" alt="low-height">         
-                <input name="test" class="checkbox-characteristics" type="checkbox" value="short">
+                 <img src="../assets/033.png" alt="low-height">         
+                <input class="checkbox-characteristics height" type="checkbox" value="short">
             </div>
             <div class="checkbox-image-container">
             <img src="../assets/148.png" alt="medium-height">
-            <input class="checkbox-characteristics" type="checkbox" value="medium height">
+            <input class="checkbox-characteristics height" type="checkbox" value="medium height">
             </div>
             <div class="checkbox-image-container">
             <img src="../assets/384.png" alt="tall-height">
-            <input class="checkbox-characteristics" type="checkbox" value="tall">
+            <input class="checkbox-characteristics height" type="checkbox" value="tall">
             </div>
         </div>
         <p class="advanced-search-label">Peso</p>
         <div class="by-weight">       
             <div class="checkbox-image-container">
             <img class="circles circle-1" src="../assets/9023402_circles_three_fill_icon.png" alt="low-weight">
-            <input class="checkbox-characteristics" type="checkbox" value="light">
+            <input class="checkbox-characteristics weight" type="checkbox" value="light">
             </div>
             <div class="checkbox-image-container">
             <img class="circles circle-2" src="../assets/9023402_circles_three_fill_icon.png" alt="medium-weight">
             <img class="circles circle-3" src="../assets/9023402_circles_three_fill_icon.png" alt="medium-weight">
             <img class="circles circle-4" src="../assets/9023402_circles_three_fill_icon.png" alt="medium-weight">
-            <input class="checkbox-characteristics" type="checkbox" value="medium weight">
+            <input class="checkbox-characteristics weight" type="checkbox" value="medium weight">
             </div>
             <div class="checkbox-image-container">
             <img class="circles circle-5" src="../assets/9023402_circles_three_fill_icon.png" alt="heavy-weight">
@@ -479,7 +577,7 @@ document.querySelector('.advanced-search-bar').addEventListener('click', () => {
             <img class="circles circle-7" src="../assets/9023402_circles_three_fill_icon.png" alt="heavy-weight">
             <img class="circles circle-8" src="../assets/9023402_circles_three_fill_icon.png" alt="heavy-weight">
             <img class="circles circle-9" src="../assets/9023402_circles_three_fill_icon.png" alt="heavy-weight">
-            <input class="checkbox-characteristics" type="checkbox" valuie="">
+            <input class="checkbox-characteristics weight" type="checkbox" value="heavy">
             </div>
         </div>
     </div>
@@ -499,6 +597,50 @@ document.querySelector('.advanced-search-bar').addEventListener('click', () => {
 filterBarContainer.innerHTML += filterBar
 filterBarContainer.classList.add('expand')
 advancedSearchButton.innerText = 'Esconder busca avançada'
+
+
+const table = document.querySelector('.advanced-search-options')
+let typesSelected = [];
+let weaknessSelected = [];
+let heightSelected = []
+let weightSelected = []
+table.addEventListener('change', event => {
+    if (event.target.type === 'checkbox') {
+      const checked = document.querySelectorAll('input[id="type"]:checked')
+      const weaknessChecked = document.querySelectorAll('input[id="weakness"]:checked')
+      const heightChecked = document.querySelectorAll('.height:checked')
+      const weightChecked = document.querySelectorAll('.weight:checked')
+      weightSelected = Array.from(weightChecked).map(x => x.value)
+      heightSelected = Array.from(heightChecked).map(x => x.value)
+      typesSelected = Array.from(checked).map(x => x.value)
+      weaknessSelected = Array.from(weaknessChecked).map(x => capitalizeFirstLetter(x.value))
+      console.log(weaknessSelected)
+    }
+  })
+  
+const button = document.querySelector('#apply')
+button.addEventListener('click', () => {
+    if(typesSelected.length || weaknessSelected.length){
+        const advancedSearch = advancedSearchType(typesSelected, weaknessSelected)
+        j = 0
+        limitCards = 12
+        createPokemons(advancedSearch, j, limitCards)
+        if(j === advancedSearch.length){
+            return
+        } else {
+            window.onscroll = function() {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {             
+                if(!searchStatus){
+                    createPokemons(advancedSearch,  j, limitCards)
+                }
+            }
+        }
+        }
+    } else{
+        return
+    }
+})
+
     }
     else if(advancedSearchButton.innerText === 'Esconder busca avançada'){
         console.log('teste')
@@ -511,4 +653,3 @@ advancedSearchButton.innerText = 'Esconder busca avançada'
         
     }
 })
-

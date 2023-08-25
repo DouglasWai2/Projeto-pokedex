@@ -366,32 +366,29 @@ h1{
     width: 140px;
 }
 
+.label-container{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .input-container{
     position: relative;
     display: flex;
-    gap: 10px;
-    margin-left: 10px;
-    margin-right: 40px;
+    gap:12px;
 }
 
 .checkmark{
-    left: 9px;
-    top: 5px;
     position: absolute;
     pointer-events:none; 
+    z-index: 10;
+    width: 100%;
 }
 
 .input-label-text{
     position: relative;
 }
-
-.checkmark-weakness{
-    right: 33px;
-    top: 5px;
-    position: absolute; 
-    pointer-events:none; 
-}
-
 
 .advanced-search-row{
     width: 100%;
