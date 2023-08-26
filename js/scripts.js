@@ -1,269 +1,244 @@
 import pokemonDB from "../pokemonsObjAll.json" assert { type: "json" };
-let limitCards = 12
-let j = 0 
-let searchStatus = false
-let pokemonsOnScreen = []
-let filterStatus = false
-let currentStatus = ''
+let limitCards = 12;
+let j = 0;
+let searchStatus = false;
+let filters = {
+    type: [],
+    weakness: [],
+    height: [],
+    weight: [],
+    minValue: 0,
+    maxValue: 0,
+    search: searchStr
+}
+let matches;
 const uniqueIds = [];
-let pokemon = pokemonDB.filter(element => {
-  const isDuplicate = uniqueIds.includes(element.id);
+let pokemon = pokemonDB.filter((element) => {
+    const isDuplicate = uniqueIds.includes(element.id);
 
-  if (!isDuplicate) {
-    uniqueIds.push(element.id);
+    if (!isDuplicate && element.weight < 1000) {
+        uniqueIds.push(element.id);
 
-    return true;
-  }
+        return true;
+    }
 
-  return false;
+    return false;
 });
 
-createPokemons()
-function createPokemons(pokemons = pokemon, k = j, limit = limitCards, search = false){
+createPokemons();
+function createPokemons(
+    pokemons = pokemon,
+    k = j,
+    limit = limitCards,
+    search = false
+) {
     try {
-        let cards = createCards(pokemons, k, limit)
-        if(search || k < 12){
-            document.querySelector('.pokemons-background').innerHTML = cards
-        }else{
-            document.querySelector('.pokemons-background').innerHTML += cards
+        let cards = createCards(pokemons, k, limit);
+        if (search || k < 12) {
+            document.querySelector(".pokemons-background").innerHTML = cards;
+        } else {
+            document.querySelector(".pokemons-background").innerHTML += cards;
         }
-    }
-    catch (error) {
-        document.querySelector('.pokemons-background').innerHTML = '<p>ERROR! Unable to load pokemons.</p>'
-        console.log(error)
-} finally{
+    } catch (error) {
+        document.querySelector(".pokemons-background").innerHTML =
+            "<p>ERROR! Unable to load pokemons.</p>";
+        console.log(error);
+    } finally {
         setTimeout(() => {
-            removeAnimation() 
-    }, 301);     
-}
+            removeAnimation();
+        }, 301);
+    }
 }
 
-function createCards(arr, y, limit){     
-    var cards = ""
-    for (y ; y < limit; y++){
+function createCards(arr, y, limit) {
+    var cards = "";
+    for (y; y < limit; y++) {
         // Create new cards and add pokemons
-        if(y >= arr.length){
-            j = limitCards
-            limitCards += 12  
-            return cards
-        }      
-        cards += `<div id="pokemon-${arr[y].id}" class="pokemon-card animate__${randomAnimate()}">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${arr[y].id}.png" class="pokemon-image" alt="${arr[y].name}">
-        <p class="pokemon-id">N° ${String(arr[y].id).padStart(4,'0')}</p>
+        if (y >= arr.length) {
+            j = arr.length
+            limitCards += 12;
+            return cards;
+        }
+        cards += `<div id="pokemon-${arr[y].id
+            }" class="pokemon-card animate__${randomAnimate()}">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${arr[y].id
+            }.png" class="pokemon-image" alt="${arr[y].name}">
+        <p class="pokemon-id">N° ${String(arr[y].id).padStart(4, "0")}</p>
         <p class="pokemon-name">${arr[y].name}</p>
         <div class="pokemon-type-container">${createTypes(arr[y].type)}</div>
-        </div>`
-        if(!filterStatus){    
-            pokemonsOnScreen.push(arr[y])
-        }            
+        </div>`;
     }
-    j = limitCards
-    limitCards += 12   
-    return cards
+    j = limitCards;
+    limitCards += 12;
+    return cards;
 }
 
+// Sort function
+const sortByProp = function (prop) {
+    return function (a, b) {
+        if (typeof a[prop] === "number") return a[prop] - b[prop];
 
-// Load more event listener
-document.querySelector('#load-more-button').addEventListener("click", ()=> {
+        return a[prop].localeCompare(b[prop]);
+    };
+};
+
+const byName = sortByProp("name");
+const byId = sortByProp("id");
+
+const byNameAlpha = function (a, b) {
+    return byName(a, b);
+};
+
+const byIdOrder = function (a, b) {
+    return byId(a, b);
+};
+
+
+// Load more button event listener
+const button = document.querySelector('#load-more-button');
+button.onclick = function () {
     createPokemons()
-    const button = document.querySelector('#load-more-button')
     button.remove()
-})   
+}
+
 
 // Load more on scroll
-window.onscroll = function() {
+window.onscroll = function () {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-        if(!document.querySelector('#load-more-button') && !searchStatus){
-            createPokemons()
+        if (!document.querySelector("#load-more-button")) {
+            createPokemons();
         }
     }
-}
+};
 
-
-function pokemonSearch(search){
-    const searchObject = pokemon.filter((pokemon) => {       
-        switch (containsOnlyNumbers(search)){
-            case true:
-                return pokemon.id == search
-            case false:
-                return pokemon.name.toUpperCase().includes(search.toUpperCase())
-        }
-    });
-    return searchObject
-}
-
-function searchPokemon(){ 
-    const search = document.querySelector('#search-bar').value
-    if(search.trim().length){  
-        const matches = pokemonSearch(search)
-        searchStatus = true
-            if (matches.length && currentStatus === ''){
-                pokemonsOnScreen = []
-                createPokemons(matches, 0, matches.length, searchStatus)
-                const button = document.querySelector('#load-more-button')
-                button.remove()              
-            }else if (matches.length && currentStatus.length){
-                pokemonsOnScreen = []
-                if(currentStatus === 'a-z' || currentStatus === 'z-a'){
-                    if(currentStatus === 'a-z'){
-                        matches.sort(byNameAlpha)   
-                    }else{
-                        matches.sort(byNameAlpha).reverse()    
-                    }           
-                }else if(currentStatus === 'Max' || currentStatus === 'Min'){
-                    if(currentStatus === 'Max'){
-                        matches.sort(byIdOrder).reverse()
-                    }else{
-                        matches.sort(byIdOrder)  
-                    }           
-                }
-                filterStatus = false
-                createPokemons(matches, 0, matches.length, searchStatus)
-                const button = document.querySelector('#load-more-button')
-                button.remove()             
-            }else {
-                document.querySelector('.pokemons-background').innerHTML = '<p>ERROR! Pokemon não existe.</p>'
-            }
-            
-    }else {
-        location.reload()
-    }
-}
-
+var searchStr;
+const searchBar = document.querySelector("#search-bar");
+// Search bar event listener
+searchBar.addEventListener("input", () => {
+    searchStr = searchBar.value
+    filters.search = searchStr
+    console.log(filters)
+});
 
 // Search button event listener
-document.querySelector('#search-button').addEventListener('click', () => {searchPokemon()})
-document.querySelector('#search-bar').addEventListener('keypress', (e) => {
-    if(e.key === 'Enter'){
-        searchPokemon()
+document.querySelector("#search-button").addEventListener("click", () => {
+    advancedSearchPokemon();
+});
+document.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        advancedSearchPokemon();
     }
-})
-
+});
 
 // Filter event listener
-document.querySelector('#list-filter').addEventListener('change', () => {
-    const filter = document.querySelector('#list-filter').value;
-    limitCards = 12;
-    filterStatus = true
-    currentStatus = filter;
-    console.log(currentStatus);
-    if(filter === 'Max' || filter === 'Min'){      
-        if(!searchStatus){
-            if(filter === 'Max'){
-                pokemon.sort(byIdOrder).reverse();
-            }else{
-                pokemon.sort(byIdOrder);
-            }
-            createPokemons(pokemon, 0 , 12);
-        }else{
-            if(filter === 'Max'){
-                pokemonsOnScreen.sort(byIdOrder).reverse();
-            }else{
-                pokemonsOnScreen.sort(byIdOrder);
-            }
-            createPokemons(pokemonsOnScreen, 0, pokemonsOnScreen.length, true)
-        }
-    }else if (filter === 'a-z' || filter === 'z-a'){
-        if(!searchStatus){
-            if(filter === 'a-z'){
-                pokemon.sort(byNameAlpha)
-            }else{
-                pokemon.sort(byNameAlpha).reverse()
-            }
-            createPokemons(pokemon, 0, 12)
-        }else{
-            if(filter === 'a-z'){
-                pokemonsOnScreen.sort(byNameAlpha)
-            }else{
-                pokemonsOnScreen.sort(byNameAlpha).reverse()
-            }
-            createPokemons(pokemonsOnScreen, 0, pokemonsOnScreen.length)
-        }
-    }         
+document.querySelector("#list-filter").addEventListener("change", () => {
+    sortPokemonsBy()
 })
 
-function capitalizeFirstLetter(str){
-   return str.charAt(0).toUpperCase() + str.slice(1)
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function containsOnlyNumbers(str) {
     return /^\d+$/.test(str);
 }
 
-function createTypes(types){
-    let pokemonType = ""
+function createTypes(types) {
+    let pokemonType = "";
     types.forEach((type) => {
-        pokemonType += `<span class="pokemon-type color-${type}">${type}</span>`
-    })
-    return pokemonType
+        pokemonType += `<span class="pokemon-type color-${type}">${type}</span>`;
+    });
+    return pokemonType;
 }
 
-function removeAnimation(){    
-    let elements = document.querySelectorAll('[class^="pokemon-card animate"]')
+function removeAnimation() {
+    let elements = document.querySelectorAll('[class^="pokemon-card animate"]');
     elements.forEach((element) => {
         element.classList.remove(element.classList[1]);
-        element.classList.add('bounce')
+        element.classList.add("bounce");
     });
 }
 
-
-function randomAnimate(){
-    let animateArr = ['backInLeft', 'backInDown', 'backInRight', 'backInUp']
-    let id = Math.floor(Math.random() * animateArr.length)
-    return animateArr[id]
+function randomAnimate() {
+    let animateArr = ["backInLeft", "backInDown", "backInRight", "backInUp"];
+    let id = Math.floor(Math.random() * animateArr.length);
+    return animateArr[id];
 }
 
-const advancedSearchType = (type, weakness) => {
-    let searchObject 
-    if(type.length && weakness.length){
-        searchObject= pokemon.filter((pokemon) => {
-            return type.every(elem => pokemon.type.includes(elem)) && 
-            weakness.every(elem => pokemon.weakness.includes(elem))
-        })
-    } else if(!weakness.length){
-        searchObject= pokemon.filter((pokemon) => {
-            return type.every(elem => pokemon.type.includes(elem))
-        })
-    } else if (!type.length){
-        searchObject= pokemon.filter((pokemon) => {
-            return weakness.every(elem => pokemon.weakness.includes(elem))
-        })
-    }
-    console.log(searchObject)
-    return searchObject
+function filterItems(items, filters) {
+    return items.filter(item => {
+        if (filters.type && !filters.type.every(type => item.type.includes(type))) {
+            return false;
+        }
+
+        if (filters.weakness && !filters.weakness.every(weakness => item.weakness.includes(weakness))) {
+            return false;
+        }
+
+        if (filters.height.length > 0) {
+            const heightRanges = {
+                "short": item.height <= 1.1,
+                "medium": item.height > 1.1 && item.height <= 2.1,
+                "tall": item.height > 2.1
+            };
+            const hasSelectedHeight = filters.height.some(selectedHeight =>
+                heightRanges[selectedHeight]
+            );
+            if (!hasSelectedHeight) {
+                return false;
+            }
+        }
+
+        if (filters.weight.length > 0) {
+            const weightRanges = {
+                "light": item.weight <= 40,
+                "medium": item.weight > 40 && item.weight <= 219,
+                "heavy": item.weight > 219
+            };
+            const hasSelectedWeight = filters.weight.some(selectedWeight =>
+                weightRanges[selectedWeight]
+            );
+            if (!hasSelectedWeight) {
+                return false;
+            }
+        }
+
+        if (filters.minValue > 0 && item.id < filters.minValue) {
+            return false
+
+        }
+        if (filters.maxValue > 0 && item.id > filters.maxValue) {
+            return false
+
+        }
+
+        if (filters.search) {
+            switch (containsOnlyNumbers(filters.search)) {
+                case true:
+                    return item.id == filters.search;
+                case false:
+                    return item.name.toUpperCase().includes(filters.search.toUpperCase());
+            }
+
+        }
+
+        return true;
+    })
 }
 
 
-
-// Sort function
-const sortByProp = function(prop){
-    return function(a,b){
-      if(typeof a[prop] === 'number')
-        return a[prop]-b[prop];
-  
-      return a[prop].localeCompare(b[prop]); 
-    } 
-}
-
-const byName = sortByProp('name')
-const byId = sortByProp('id')
-
-const byNameAlpha = function(a,b) {
-    return byName (a, b)
-}
-
-const byIdOrder = function (a,b) {
-    return byId (a,b)
-}
-
-document.querySelector('.advanced-search-bar').addEventListener('click', () => {
-    const advancedSearchButton = document.querySelector('#advanced-search-text')
-    const filterBarContainer = document.querySelector('.advanced-search-container')
-    filterBarContainer.classList.remove('contract')
-    filterBarContainer.classList.remove('desappear')
-    const advancedSearch = document.querySelector('.advanced-search p').innerHTML
-    if(advancedSearch === 'Mostrar busca avançada'){
-    var filterBar = `<div class="advanced-search-options container appear">
+document.querySelector(".advanced-search-drag").addEventListener("click", () => {
+    document.querySelector(".advanced-search-bar").classList.add('drag')
+    document.querySelector(".span-border").classList.add('drag')
+    const advancedSearchButton = document.querySelector("#advanced-search-text");
+    const filterBarContainer = document.querySelector(
+        ".advanced-search-container"
+    );
+    filterBarContainer.classList.remove("contract");
+    filterBarContainer.classList.remove("desappear");
+    const advancedSearch = document.querySelector(".advanced-search p").innerHTML;
+    if (advancedSearch === "Mostrar busca avançada") {
+        var filterBar = `<div class="advanced-search-options container appear">
     <div class="advanced-search-left">
         <table class="advanced-search-table container">
             <thead class="advanced-search-title">
@@ -542,34 +517,34 @@ document.querySelector('.advanced-search-bar').addEventListener('click', () => {
             <p class="advanced-search-label">Habilidade</p>
             <label class="filter-list-icon bigger" for="filter-list">
                 <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon">
-                <select class="filter-list ability" name="ability"></select></label>
+                <select id="ability-filter" class="filter-list ability" name="ability"></select></label>
         </div>
         <p class="advanced-search-label">Altura</p>
         <div class="by-height">           
             <div class="checkbox-image-container">
                  <img src="../assets/033.png" alt="low-height">         
-                <input class="checkbox-characteristics height" type="checkbox" value="short">
+                <input class="checkbox-characteristics short height" id="height" type="checkbox" value="short">
             </div>
             <div class="checkbox-image-container">
             <img src="../assets/148.png" alt="medium-height">
-            <input class="checkbox-characteristics height" type="checkbox" value="medium height">
+            <input class="checkbox-characteristics medium-height" id="height" type="checkbox" value="medium">
             </div>
             <div class="checkbox-image-container">
             <img src="../assets/384.png" alt="tall-height">
-            <input class="checkbox-characteristics height" type="checkbox" value="tall">
+            <input class="checkbox-characteristics tall height" id="height" type="checkbox" value="tall">
             </div>
         </div>
         <p class="advanced-search-label">Peso</p>
         <div class="by-weight">       
             <div class="checkbox-image-container">
             <img class="circles circle-1" src="../assets/9023402_circles_three_fill_icon.png" alt="low-weight">
-            <input class="checkbox-characteristics weight" type="checkbox" value="light">
+            <input class="checkbox-characteristics light weight" id="weight" type="checkbox" value="light">
             </div>
             <div class="checkbox-image-container">
             <img class="circles circle-2" src="../assets/9023402_circles_three_fill_icon.png" alt="medium-weight">
             <img class="circles circle-3" src="../assets/9023402_circles_three_fill_icon.png" alt="medium-weight">
             <img class="circles circle-4" src="../assets/9023402_circles_three_fill_icon.png" alt="medium-weight">
-            <input class="checkbox-characteristics weight" type="checkbox" value="medium weight">
+            <input class="checkbox-characteristics medium-weight id="weight" type="checkbox" value="medium">
             </div>
             <div class="checkbox-image-container">
             <img class="circles circle-5" src="../assets/9023402_circles_three_fill_icon.png" alt="heavy-weight">
@@ -577,7 +552,7 @@ document.querySelector('.advanced-search-bar').addEventListener('click', () => {
             <img class="circles circle-7" src="../assets/9023402_circles_three_fill_icon.png" alt="heavy-weight">
             <img class="circles circle-8" src="../assets/9023402_circles_three_fill_icon.png" alt="heavy-weight">
             <img class="circles circle-9" src="../assets/9023402_circles_three_fill_icon.png" alt="heavy-weight">
-            <input class="checkbox-characteristics weight" type="checkbox" value="heavy">
+            <input class="checkbox-characteristics heavy weight" id="weight" type="checkbox" value="heavy">
             </div>
         </div>
     </div>
@@ -585,71 +560,168 @@ document.querySelector('.advanced-search-bar').addEventListener('click', () => {
 <div class="advanced-search-footer container">
     <div class="interval">
         <p>Intervalo de números</p>
-        <input class="interval-input" type="number" placeholder="1">
+        <input id="" class="interval-input minValue" type="number" placeholder="1">
         <span>-</span>
-        <input class="interval-input" type="number" placeholder="1010">
+        <input id="" class="interval-input maxValue" type="number" placeholder="1010">
     </div>
     <div class="filter-buttons">
         <button class="dark" id="reset">Redefinir</button>
         <button class="dark" id="apply"><span><img src="../assets/input-search-bg.png">Pesquisar</span></button>
     </div>
-</div>`
-filterBarContainer.innerHTML += filterBar
-filterBarContainer.classList.add('expand')
-advancedSearchButton.innerText = 'Esconder busca avançada'
-
-
-const table = document.querySelector('.advanced-search-options')
-let typesSelected = [];
-let weaknessSelected = [];
-let heightSelected = []
-let weightSelected = []
-table.addEventListener('change', event => {
-    if (event.target.type === 'checkbox') {
-      const checked = document.querySelectorAll('input[id="type"]:checked')
-      const weaknessChecked = document.querySelectorAll('input[id="weakness"]:checked')
-      const heightChecked = document.querySelectorAll('.height:checked')
-      const weightChecked = document.querySelectorAll('.weight:checked')
-      weightSelected = Array.from(weightChecked).map(x => x.value)
-      heightSelected = Array.from(heightChecked).map(x => x.value)
-      typesSelected = Array.from(checked).map(x => x.value)
-      weaknessSelected = Array.from(weaknessChecked).map(x => capitalizeFirstLetter(x.value))
-      console.log(weaknessSelected)
-    }
-  })
-  
-const button = document.querySelector('#apply')
-button.addEventListener('click', () => {
-    if(typesSelected.length || weaknessSelected.length){
-        const advancedSearch = advancedSearchType(typesSelected, weaknessSelected)
-        j = 0
-        limitCards = 12
-        createPokemons(advancedSearch, j, limitCards)
-        if(j === advancedSearch.length){
-            return
-        } else {
-            window.onscroll = function() {
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {             
-                if(!searchStatus){
-                    createPokemons(advancedSearch,  j, limitCards)
+</div>`;
+        filterBarContainer.innerHTML += filterBar;
+        filterBarContainer.classList.add("expand");
+        advancedSearchButton.innerText = "Esconder busca avançada";
+        const abilityFilter = document.querySelector('#ability-filter')
+        function placeOptions() {
+            const abilityOptions = getOptions()
+            abilityOptions.forEach((option) => {
+                var opt = document.createElement('option');
+                opt.value = option
+                opt.innerHTML = option
+                abilityFilter.appendChild(opt)
+            })
+        }
+        abilityFilter.addEventListener('click', () => {
+            if (abilityFilter.innerHTML === '') {
+                placeOptions()
+            }
+        })
+        const table = document.querySelector(".advanced-search-options");
+        let typesSelected = [];
+        let weaknessSelected = [];
+        let heightSelected = [];
+        let weightSelected = [];
+        let minValue
+        let maxValue
+        const minValueBar = document.querySelector('.minValue')
+        minValueBar.addEventListener('change', function () {
+            minValue = parseInt(this.value)
+        })
+        const maxValueBar = document.querySelector('.maxValue')
+        maxValueBar.addEventListener('change', function () {
+            maxValue = parseInt(this.value)
+        })
+        table.addEventListener("change", (event) => {
+            if (event.target.type === "checkbox") {
+                const typeChecked = document.querySelectorAll('input[id="type"]:checked');
+                const weaknessChecked = document.querySelectorAll(
+                    'input[id="weakness"]:checked'
+                );
+                const heightChecked = document.querySelectorAll(
+                    'input[id="height"]:checked'
+                );
+                const weightChecked = document.querySelectorAll(
+                    'input[id="weight"]:checked'
+                );
+                typesSelected = Array.from(typeChecked).map((x) => x.value);
+                weaknessSelected = Array.from(weaknessChecked).map((x) =>
+                    capitalizeFirstLetter(x.value)
+                );
+                heightSelected = Array.from(heightChecked).map((x) => x.value);
+                weightSelected = Array.from(weightChecked).map((x) => x.value);
+                filters = {
+                    type: typesSelected,
+                    weakness: weaknessSelected,
+                    height: heightSelected,
+                    weight: weightSelected,
+                    minValue: minValue,
+                    maxValue: maxValue,
+                    search: searchStr
                 }
             }
-        }
-        }
-    } else{
-        return
-    }
-})
+        });
 
+        const buttonU = document.querySelector("#apply");
+        buttonU.addEventListener("click", () => {
+            advancedSearchPokemon()
+        })
+    } else if (advancedSearchButton.innerText === "Esconder busca avançada") {
+        document
+            .querySelector(".advanced-search-options")
+            .classList.remove("appear");
+        document
+            .querySelector(".advanced-search-bar").classList.remove('drag')
+        document
+            .querySelector(".span-border").classList.remove('drag')
+        document
+            .querySelector(".advanced-search-container")
+            .classList.add("desappear");
+        filterBarContainer.classList.add("contract");
+        setTimeout(() => {
+            filterBarContainer.classList.remove(filterBarContainer.classList[1]);
+            // document
+            // .querySelector(".advanced-search-container").classList.add('none')
+            filterBarContainer.innerHTML = "";
+            advancedSearchButton.innerText = "Mostrar busca avançada";
+        }, 180);
     }
-    else if(advancedSearchButton.innerText === 'Esconder busca avançada'){
-        console.log('teste')
-        document.querySelector('.advanced-search-options').classList.remove('appear')
-        document.querySelector('.advanced-search-container').classList.add('desappear')
-        filterBarContainer.classList.add('contract')
-        setTimeout(() => { filterBarContainer.classList.remove(filterBarContainer.classList[1]) 
-            filterBarContainer.innerHTML = '' 
-            advancedSearchButton.innerText = 'Mostrar busca avançada' }, 350);
-        
+});
+
+
+function advancedSearchPokemon() {
+    searchStatus = true
+    matches = filterItems(pokemon, filters)
+    button.onclick = function () {
+        createPokemons(matches)
+        button.remove()
     }
-})
+    window.onscroll = function () {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+            if (!document.querySelector("#load-more-button") && j < matches.length) {
+                createPokemons(matches);
+            }
+        }
+    };
+    if (matches.length < 12) {
+        button.remove()
+    } else {
+        document.querySelector('.load-more').appendChild(button)
+    }
+    j = 0;
+    limitCards = 12;
+    sortPokemonsBy()
+    if (j > matches.length) {
+        return;
+    }
+}
+
+
+function sortPokemonsBy() {
+    const filter = document.querySelector("#list-filter").value;
+    let arrObject;
+    j = 0
+    limitCards = 12
+    if (!searchStatus) {
+        arrObject = pokemon;
+    } else {
+        arrObject = matches;
+    }
+    if (filter === "Max" || filter === "Min") {
+        if (filter === "Max") {
+            arrObject.sort(byIdOrder).reverse();
+        } else {
+            arrObject.sort(byIdOrder);
+        }
+        createPokemons(arrObject);
+    } else if (filter === "a-z" || filter === "z-a") {
+        if (filter === "a-z") {
+            arrObject.sort(byNameAlpha);
+        } else {
+            arrObject.sort(byNameAlpha).reverse();
+        }
+        createPokemons(arrObject);
+    }
+}
+
+function getOptions() {
+    let abilitiesArr = [];
+    for (let i = 0; i < pokemonDB.length; i++) {
+        for (let j = 0; j < pokemonDB[i]['abilities'].length; j++) {
+            abilitiesArr.push(pokemonDB[i]['abilities'][j])
+        }
+    }
+    const uniquesSet = new Set(abilitiesArr)
+    const uniqueAbilities = [...uniquesSet]
+    return uniqueAbilities.sort()
+}

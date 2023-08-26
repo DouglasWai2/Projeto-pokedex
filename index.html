@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,500;0,700;1,400&display=swap"
         rel="stylesheet">
+        <script type="module" src="./js/scripts.js"></script>
     <title>Pokedex - Douglas</title>
 </head>
 
@@ -72,10 +73,10 @@
                     <div class="wrapper container">
                         <div id="search-left-container">
                             <div id="search-input">
-                                <label id="label-search" for="search_bar">Nome ou numéro</label>
+                                <label id="label-search" for="search_bar">Nome ou número</label>
                                 <div id="container-button">
                                     <input id="search-bar" type="text" />
-                                    <input class="dark" id="search-button" type="button" value="" />
+                                    <input class="search-button dark" id="search-button" type="button" value="" />
                                 </div>
                             </div>
                             <p id="search-text">
@@ -92,16 +93,16 @@
                     </div>
                 </div>
                 <div class="advanced-search">
-                    <div class="advanced-search-container">
-                    
+                    <div class="advanced-search-container">  
                 </div>
                     <div class="advanced-search-bar">
+                        <div class="advanced-search-drag">
                         <p id="advanced-search-text">Mostrar busca avançada</p>
                         <img src="./assets/down-arrow.png" alt="advanced-search icon">
+                        </div>
                     </div>
                 </div>
-
-                <div id="span-border-container">
+                <div class="span-border" id="span-border-container">
                     <div id="span-border-left"><img src="./assets/large-notch-darkgray.png"></div>
                     <div id="span-border-middle"></div>
                     <div id="span-border-right"><img src="./assets/large-notch-darkgray.png"></div>
@@ -163,6 +164,5 @@
         </footer>
     </div>
 </body>
-<script type="module" src="./js/scripts.js"></script>
 
 </html>
