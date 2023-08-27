@@ -9,9 +9,11 @@ let filters = {
     weight: [],
     minValue: 0,
     maxValue: 0,
-    search: searchStr
+    search: searchStr,
+    ability: ''
 }
 let matches;
+
 const uniqueIds = [];
 let pokemon = pokemonDB.filter((element) => {
     const isDuplicate = uniqueIds.includes(element.id);
@@ -111,13 +113,13 @@ window.onscroll = function () {
     }
 };
 
-var searchStr;
+var searchStr = '';
 const searchBar = document.querySelector("#search-bar");
 // Search bar event listener
 searchBar.addEventListener("input", () => {
     searchStr = searchBar.value
     filters.search = searchStr
-    console.log(filters)
+
 });
 
 // Search button event listener
@@ -133,7 +135,29 @@ document.addEventListener("keypress", (e) => {
 // Filter event listener
 document.querySelector("#list-filter").addEventListener("change", () => {
     sortPokemonsBy()
-})
+});
+
+// Surprise-me button event listener
+document.querySelector('#randomize-button').addEventListener('click', ()=> {
+    j = 0
+    limitCards = 12
+    searchStatus = false
+    const randomPokemons = randomizePokemons(pokemon)
+    createPokemons(randomPokemons)
+    // Load more button event listener
+    button.onclick = function () {
+        createPokemons(randomPokemons)
+        button.remove()
+    }
+    // Load more on scroll
+    window.onscroll = function () {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+            if (!document.querySelector("#load-more-button")) {
+                createPokemons(randomPokemons);
+            }
+        }
+    };
+});
 
 function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -165,21 +189,21 @@ function randomAnimate() {
     return animateArr[id];
 }
 
-function filterItems(items, filters) {
-    return items.filter(item => {
-        if (filters.type && !filters.type.every(type => item.type.includes(type))) {
+function filterPokemons(pokemons, filters) {
+    return pokemons.filter(pokemon => {
+        if (filters.type && !filters.type.every(type => pokemon.type.includes(type))) {
             return false;
         }
 
-        if (filters.weakness && !filters.weakness.every(weakness => item.weakness.includes(weakness))) {
+        if (filters.weakness && !filters.weakness.every(weakness => pokemon.weakness.includes(weakness))) {
             return false;
         }
 
         if (filters.height.length > 0) {
             const heightRanges = {
-                "short": item.height <= 1.1,
-                "medium": item.height > 1.1 && item.height <= 2.1,
-                "tall": item.height > 2.1
+                "short": pokemon.height <= 1.1,
+                "medium": pokemon.height > 1.1 && pokemon.height <= 2.1,
+                "tall": pokemon.height > 2.1
             };
             const hasSelectedHeight = filters.height.some(selectedHeight =>
                 heightRanges[selectedHeight]
@@ -191,9 +215,9 @@ function filterItems(items, filters) {
 
         if (filters.weight.length > 0) {
             const weightRanges = {
-                "light": item.weight <= 40,
-                "medium": item.weight > 40 && item.weight <= 219,
-                "heavy": item.weight > 219
+                "light": pokemon.weight <= 40,
+                "medium": pokemon.weight > 40 && pokemon.weight <= 219,
+                "heavy": pokemon.weight > 219
             };
             const hasSelectedWeight = filters.weight.some(selectedWeight =>
                 weightRanges[selectedWeight]
@@ -203,23 +227,30 @@ function filterItems(items, filters) {
             }
         }
 
-        if (filters.minValue > 0 && item.id < filters.minValue) {
-            return false
-
-        }
-        if (filters.maxValue > 0 && item.id > filters.maxValue) {
+        if (filters.minValue > 0 && pokemon.id < filters.minValue) {
             return false
 
         }
 
-        if (filters.search) {
-            switch (containsOnlyNumbers(filters.search)) {
-                case true:
-                    return item.id == filters.search;
-                case false:
-                    return item.name.toUpperCase().includes(filters.search.toUpperCase());
-            }
+        if (filters.maxValue > 0 && pokemon.id > filters.maxValue) {
+            return false
 
+        }
+
+        if ((containsOnlyNumbers(filters.search)) && pokemon.id == filters.search ) {
+            return true
+        }
+
+        if (filters.search && !pokemon.name.toUpperCase().includes(filters.search.toUpperCase())) {
+            return false
+        }
+
+        if (filters.ability !== '' && !pokemon.abilities.includes(filters.ability)) {
+            return false
+        }
+
+        if(filters.ability !== '' && !pokemonDB.filter(pokemond => pokemond.abilities.includes(filters.ability))){
+            return false
         }
 
         return true;
@@ -228,16 +259,25 @@ function filterItems(items, filters) {
 
 
 document.querySelector(".advanced-search-drag").addEventListener("click", () => {
+    // Add new animations and remove old ones
     document.querySelector(".advanced-search-bar").classList.add('drag')
     document.querySelector(".span-border").classList.add('drag')
+    const animations = document
+        .querySelector(".advanced-search-container");
+    const filterValues = document.querySelectorAll(".filter-values");
     const advancedSearchButton = document.querySelector("#advanced-search-text");
     const filterBarContainer = document.querySelector(
         ".advanced-search-container"
     );
+    if (filterValues) {
+        filterValues.forEach(element => element.remove())
+    }
+    animations.classList.remove('none')
     filterBarContainer.classList.remove("contract");
     filterBarContainer.classList.remove("desappear");
-    const advancedSearch = document.querySelector(".advanced-search p").innerHTML;
-    if (advancedSearch === "Mostrar busca avançada") {
+    filterBarContainer.classList.add('expand')
+    // Advanced search tab
+    if (!document.querySelector('.advanced-search-options')) {
         var filterBar = `<div class="advanced-search-options container appear">
     <div class="advanced-search-left">
         <table class="advanced-search-table container">
@@ -250,7 +290,6 @@ document.querySelector(".advanced-search-drag").addEventListener("click", () => 
                 </div>
             </thead>
             <tbody>
-
                 <tr class="advanced-search-row">
                     <td class="color-bug" id="pokemon-type-filter">
                         <span id="">Bug</span>
@@ -517,12 +556,12 @@ document.querySelector(".advanced-search-drag").addEventListener("click", () => 
             <p class="advanced-search-label">Habilidade</p>
             <label class="filter-list-icon bigger" for="filter-list">
                 <img src="./assets/icons8-pokeball-50.png" alt="pikachu-icon">
-                <select id="ability-filter" class="filter-list ability" name="ability"></select></label>
+                <select id="ability-filter" class="filter-list ability" name="ability"><option value="" id="first-option">Todas</option></select></label>
         </div>
         <p class="advanced-search-label">Altura</p>
         <div class="by-height">           
             <div class="checkbox-image-container">
-                 <img src="../assets/033.png" alt="low-height">         
+                 <img src="../assets/033.png" alt="low-height">       
                 <input class="checkbox-characteristics short height" id="height" type="checkbox" value="short">
             </div>
             <div class="checkbox-image-container">
@@ -544,7 +583,7 @@ document.querySelector(".advanced-search-drag").addEventListener("click", () => 
             <img class="circles circle-2" src="../assets/9023402_circles_three_fill_icon.png" alt="medium-weight">
             <img class="circles circle-3" src="../assets/9023402_circles_three_fill_icon.png" alt="medium-weight">
             <img class="circles circle-4" src="../assets/9023402_circles_three_fill_icon.png" alt="medium-weight">
-            <input class="checkbox-characteristics medium-weight id="weight" type="checkbox" value="medium">
+            <input class="checkbox-characteristics medium-weight" id="weight" type="checkbox" value="medium">
             </div>
             <div class="checkbox-image-container">
             <img class="circles circle-5" src="../assets/9023402_circles_three_fill_icon.png" alt="heavy-weight">
@@ -560,9 +599,9 @@ document.querySelector(".advanced-search-drag").addEventListener("click", () => 
 <div class="advanced-search-footer container">
     <div class="interval">
         <p>Intervalo de números</p>
-        <input id="" class="interval-input minValue" type="number" placeholder="1">
+        <input id="interval-values" class="interval-input minValue" type="number" placeholder="1">
         <span>-</span>
-        <input id="" class="interval-input maxValue" type="number" placeholder="1010">
+        <input id="interval-values" class="interval-input maxValue" type="number" placeholder="1010">
     </div>
     <div class="filter-buttons">
         <button class="dark" id="reset">Redefinir</button>
@@ -570,8 +609,7 @@ document.querySelector(".advanced-search-drag").addEventListener("click", () => 
     </div>
 </div>`;
         filterBarContainer.innerHTML += filterBar;
-        filterBarContainer.classList.add("expand");
-        advancedSearchButton.innerText = "Esconder busca avançada";
+        // Populate filter list
         const abilityFilter = document.querySelector('#ability-filter')
         function placeOptions() {
             const abilityOptions = getOptions()
@@ -579,28 +617,28 @@ document.querySelector(".advanced-search-drag").addEventListener("click", () => 
                 var opt = document.createElement('option');
                 opt.value = option
                 opt.innerHTML = option
+                opt.classList.add('ability-options')
                 abilityFilter.appendChild(opt)
             })
         }
         abilityFilter.addEventListener('click', () => {
-            if (abilityFilter.innerHTML === '') {
+            if (!document.querySelector('.ability-options')) {
                 placeOptions()
             }
         })
+        abilityFilter.addEventListener('change', () => {
+            filters.ability = abilityFilter.value
+        })
+
+        // Get values from advanced filter
         const table = document.querySelector(".advanced-search-options");
-        let typesSelected = [];
-        let weaknessSelected = [];
-        let heightSelected = [];
-        let weightSelected = [];
-        let minValue
-        let maxValue
         const minValueBar = document.querySelector('.minValue')
-        minValueBar.addEventListener('change', function () {
-            minValue = parseInt(this.value)
+        minValueBar.addEventListener('input', function () {
+            filters.minValue = parseInt(this.value)
         })
         const maxValueBar = document.querySelector('.maxValue')
-        maxValueBar.addEventListener('change', function () {
-            maxValue = parseInt(this.value)
+        maxValueBar.addEventListener('input', function () {
+            filters.maxValue = parseInt(this.value)
         })
         table.addEventListener("change", (event) => {
             if (event.target.type === "checkbox") {
@@ -614,24 +652,33 @@ document.querySelector(".advanced-search-drag").addEventListener("click", () => 
                 const weightChecked = document.querySelectorAll(
                     'input[id="weight"]:checked'
                 );
-                typesSelected = Array.from(typeChecked).map((x) => x.value);
-                weaknessSelected = Array.from(weaknessChecked).map((x) =>
+                filters.type = Array.from(typeChecked).map((x) => x.value);
+                filters.weakness = Array.from(weaknessChecked).map((x) =>
                     capitalizeFirstLetter(x.value)
                 );
-                heightSelected = Array.from(heightChecked).map((x) => x.value);
-                weightSelected = Array.from(weightChecked).map((x) => x.value);
-                filters = {
-                    type: typesSelected,
-                    weakness: weaknessSelected,
-                    height: heightSelected,
-                    weight: weightSelected,
-                    minValue: minValue,
-                    maxValue: maxValue,
-                    search: searchStr
-                }
+                filters.height = Array.from(heightChecked).map((x) => x.value);
+                filters.weight = Array.from(weightChecked).map((x) => x.value);
             }
         });
-
+        // Reset filters button
+        const redefineButton = document.querySelector('#reset');
+        redefineButton.addEventListener('click', () => {
+            document.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false)
+            minValueBar.value = ''
+            maxValueBar.value = ''
+            abilityFilter.value = ''
+            filters = {
+                type: [],
+                weakness: [],
+                height: [],
+                weight: [],
+                minValue: 0,
+                maxValue: 0,
+                search: searchStr,
+                ability: ''
+            }
+        })
+        //Apply filters button
         const buttonU = document.querySelector("#apply");
         buttonU.addEventListener("click", () => {
             advancedSearchPokemon()
@@ -644,24 +691,23 @@ document.querySelector(".advanced-search-drag").addEventListener("click", () => 
             .querySelector(".advanced-search-bar").classList.remove('drag')
         document
             .querySelector(".span-border").classList.remove('drag')
-        document
-            .querySelector(".advanced-search-container")
+        animations
             .classList.add("desappear");
         filterBarContainer.classList.add("contract");
         setTimeout(() => {
-            filterBarContainer.classList.remove(filterBarContainer.classList[1]);
-            // document
-            // .querySelector(".advanced-search-container").classList.add('none')
-            filterBarContainer.innerHTML = "";
+            filterBarContainer.classList.remove('expand');
+            animations.classList.add('none')
             advancedSearchButton.innerText = "Mostrar busca avançada";
         }, 180);
+        document.querySelector('.filter-values-box').innerHTML = createValuesBox()
     }
+    advancedSearchButton.innerText = "Esconder busca avançada"
 });
 
 
 function advancedSearchPokemon() {
     searchStatus = true
-    matches = filterItems(pokemon, filters)
+    matches = filterPokemons(pokemon, filters)
     button.onclick = function () {
         createPokemons(matches)
         button.remove()
@@ -724,4 +770,90 @@ function getOptions() {
     const uniquesSet = new Set(abilitiesArr)
     const uniqueAbilities = [...uniquesSet]
     return uniqueAbilities.sort()
+}
+
+
+
+function createValuesBox() {
+    let valueBox = ''
+    let intervalBox = ''
+    let min
+    let max
+    for (const prop in filters) {
+        const value = filters[prop]
+        if ((Array.isArray(value) && value.length > 0) ||
+            (typeof value === 'string' && value !== '')) {
+            if (filters[prop].length == 1 || typeof filters[prop] === 'string') {
+                valueBox += `<div class="filter-values dark appear" id="remove-${prop}">
+                    <p id="${prop}-box">${prop}: <span>${filters[prop]}</span></p><button id="${prop}-clear-button">X</button>
+                    </div>` 
+                    setTimeout(() => {
+                        clearButton(prop)
+                    }, 180)              
+            } else {
+                valueBox += `<div class="filter-values dark appear" id="remove-${prop}">
+                <p>${prop}: <span>${filters[prop].length} selected</span></p><button id="${prop}-clear-button">X</button>
+                </div>`
+                setTimeout(() => {
+                    clearButton(prop)
+                }, 180)
+                
+            }
+
+        } else if ((typeof value === 'number' && value !== 0)) {
+            min = filters.minValue
+            max = filters.maxValue
+            if (!document.querySelector('.minValue').value) {
+                min = 1
+            }
+            if (!document.querySelector('.maxValue').value) {
+                max = 1010
+            }
+            if (min === 1 && max === 1010) {
+                intervalBox = ''
+            }
+            else {
+                intervalBox = `<div class="filter-values dark appear" id="remove-${prop}">
+            <p id="interval-box">Intervalo: <span>${min} - ${max}</span></p><button id="${prop}-clear-button">X</button>
+            </div>`
+
+            setTimeout(() => {
+                clearButton(prop)
+            }, 180)
+            }
+        }
+    }
+    return valueBox += intervalBox
+}
+
+function randomizePokemons(array) {
+    let currentIndex = array.length,  randomIndex;
+    while (currentIndex > 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    } 
+    return array;
+  }
+
+
+function clearButton(prop){
+    document.querySelector(`#${prop}-clear-button`).addEventListener('click', () => {
+        if(typeof filters[prop] === 'number'){
+            document.querySelectorAll('#interval-values').forEach(input => input.value = '')
+            filters.minValue = 0 
+            filters.maxValue = 0 
+        } else if (typeof filters[prop] === 'string') {
+            filters[prop] = ''
+            document.querySelector('#ability-filter').value = ''
+        }else if (Array.isArray(filters[prop])) {
+            filters[prop] = []  
+            document.querySelectorAll(`input[id='${prop}']:checked`).forEach(input => {
+                input.checked = false   
+            })
+        } 
+        let box = document.querySelector(`#remove-${prop}`)
+        box.remove()
+    })
 }
